@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SplashScreen } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { colorsThemePalette } from "../constants/Colors";
-import { useColorScheme } from "react-native";
+import { StatusBar, useColorScheme } from "react-native";
 
 interface ThemeContextType {
   theme: string | 'light' | 'dark';
@@ -29,9 +29,11 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         
         const storedTheme = await AsyncStorage.getItem('theme');
         if (storedTheme === 'light' || storedTheme === 'dark') {
+            StatusBar.setBarStyle(storedTheme === 'light' ? 'dark-content' : 'light-content');
             setTheme(storedTheme);
             setColorPalette(storedTheme === 'light' ? colorsThemePalette.light : colorsThemePalette.dark);
         } else {
+            StatusBar.setBarStyle(systemColorScheme === 'light' ? 'dark-content' : 'light-content');
             const systemTheme = systemColorScheme || 'light';
             setTheme(systemTheme);
             setColorPalette(systemTheme === 'light' ? colorsThemePalette.light : colorsThemePalette.dark);
@@ -43,11 +45,13 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   const changeTheme = async (newTheme: string, type: string) => {
     if(type === 'system') {
+        StatusBar.setBarStyle(systemColorScheme === 'light' ? 'dark-content' : 'light-content');
         await AsyncStorage.removeItem('theme');
         const systemTheme = systemColorScheme || 'light';
         setTheme(systemTheme);
         setColorPalette(systemTheme === 'light' ? colorsThemePalette.light : colorsThemePalette.dark);
     } else {
+        StatusBar.setBarStyle(newTheme === 'light' ? 'dark-content' : 'light-content');
         if(newTheme !== 'light' && newTheme !== 'dark') return;
         await AsyncStorage.setItem('theme', newTheme);
         setTheme(newTheme);
