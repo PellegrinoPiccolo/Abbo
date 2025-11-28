@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { SplashScreen, Tabs } from 'expo-router'
+import { SplashScreen, Tabs, useRouter } from 'expo-router'
 import TabBarButton from '../../components/TabBarButton'
 import useTheme from '../../hook/ThemeHook'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 const _layout = () => {
 
   const {t} = useTranslation();
+  const router = useRouter();
 
   SplashScreen.preventAutoHideAsync();
 
@@ -77,8 +78,10 @@ const _layout = () => {
         />
         <Tabs.Screen 
           name="add" 
-          options={{tabBarButton: TabBarButton}} 
-          listeners={{tabPress: (e) => {}}} 
+          options={{tabBarButton: TabBarButton, title: t('tabBar.add')}} 
+          listeners={{tabPress: (e) => {
+            router.push('/add');
+          }}} 
         />
         <Tabs.Screen 
           name="profile" 

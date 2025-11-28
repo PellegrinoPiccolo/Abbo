@@ -1,16 +1,18 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import useTheme from '../hook/ThemeHook';
 
-const TabBarButton = () => {
+const TabBarButton = (props: any) => {
 
   const { colorPalette } = useTheme();
 
   return (
-    <View style={[styles.button, { backgroundColor: colorPalette.primary }]} >
-        <Ionicons name="add-circle" size={30} color="white" />
-    </View>
+    <Pressable onPress={props.onPress}>
+      <View style={[styles.button, { backgroundColor: colorPalette.primary }]} >
+          <Ionicons name="add-circle" size={30} color="white" />
+      </View>
+    </Pressable>
   )
 }
 
