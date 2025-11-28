@@ -4,8 +4,7 @@ export const colorsThemePalette = {
     text: '#000000',
     textSecondary: '#555555',
     primary: '#6200EE',
-    secondary: '#FF6347',
-    border: '#E0E0E0',
+    border: '#E5E7EB',
     backgroundSecondary: '#F9FBFC',
   },
   dark: {
@@ -13,8 +12,7 @@ export const colorsThemePalette = {
     text: '#FFFFFF',
     textSecondary: '#AAAAAA',
     primary: '#8E51FF',
-    secondary: '#FF6347',
-    border: '#333333',
+    border: '#1E2A39',
     backgroundSecondary: '#0F1927',
   }
 };

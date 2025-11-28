@@ -40,6 +40,7 @@ const _layout = () => {
       screenOptions={{ 
         headerShown: true, 
         headerTitleAlign: 'left',
+        headerShadowVisible: false,
         headerStyle: {
           backgroundColor: colorPalette.background,
           borderBottomColor: colorPalette.border,
@@ -47,12 +48,13 @@ const _layout = () => {
         },
         headerTitleStyle: {
           color: colorPalette.text,
+          fontSize: 18,
         },
         headerRight: () => (
           <NativeButton pressFunction={() => changeTheme(theme === 'light' ? 'dark' : 'light', 'manual')}>
-            <View style={{ marginRight: 15, paddingHorizontal: 5 }}>
-              {theme === 'light' ? <BedTime width={25} height={25} fill={colorPalette.text} /> : 
-              <WbSun width={25} height={25} fill={colorPalette.text} /> }
+            <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+              {theme === 'light' ? <BedTime width={20} height={20} fill={colorPalette.text} /> : 
+              <WbSun width={20} height={20} fill={colorPalette.text} /> }
             </View>
           </NativeButton>
         ),
@@ -63,13 +65,14 @@ const _layout = () => {
           height: 70 + insets.bottom,
           paddingTop: 10,
           borderTopColor: colorPalette.border,
+          elevation: 0,
         }
       }}
     >
         <Tabs.Screen 
           name="index" 
           options={{ 
-            title: t('tabBar.home'),
+            title: 'Sub Track',
             tabBarIcon: ({focused}) => {
               return focused ? <HomeFilled width={30} height={30} fill={colorPalette.primary} /> : 
               <HomeIcon width={30} height={30} fill={colorPalette.textSecondary} /> 
@@ -78,7 +81,7 @@ const _layout = () => {
         />
         <Tabs.Screen 
           name="add" 
-          options={{tabBarButton: TabBarButton, title: t('tabBar.add')}} 
+          options={{tabBarButton: TabBarButton, title: 'Sub Track'}} 
           listeners={{tabPress: (e) => {
             router.push('/add');
           }}} 
@@ -86,7 +89,7 @@ const _layout = () => {
         <Tabs.Screen 
           name="profile" 
           options={{ 
-            title: t('tabBar.categories'),
+            title: 'Sub Track',
             tabBarIcon: ({focused}) => {
               return focused ? <LeaderBoardFilled width={30} height={30} fill={colorPalette.primary} /> : 
               <LeaderBoard width={30} height={30} fill={colorPalette.textSecondary} /> 
