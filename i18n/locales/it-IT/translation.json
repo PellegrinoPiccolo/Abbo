@@ -15,7 +15,7 @@
         "link": "Link al Servizio",
         "category": "Categoria",
         "firstBillingDate": "Data del Primo Addebito",
-        "reminder": "Ricordami prima del rinnovo",
+        "reminder": "Avvisami",
         "notifyMe": "Notificami",
         "dayBefore": "giorno prima",
         "daysBefore": "giorni prima",
@@ -23,7 +23,8 @@
         "weeksBefore": "settimane prima",
         "addButton": "Aggiungi Abbonamento",
         "selectDate": "Seleziona una data",
-        "done": "Fatto"
+        "done": "Fatto",
+        "add": "Aggiungi Abbonamento"
     },
     "billingCycle": {
         "monthly": "Mensile",

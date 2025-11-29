@@ -6,6 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { getLocales } from 'expo-localization';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import SwitchButton from '../../components/SwitchButton';
+import { useSharedValue } from 'react-native-reanimated';
+import {Picker} from '@react-native-picker/picker';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const add = () => {
 
@@ -22,6 +26,7 @@ const add = () => {
   const [category, setCategory] = React.useState<string>('Entertainment');
   const [firstBillingDate, setFirstBillingDate] = React.useState<Date>(new Date());
   const [reminder, setReminder] = React.useState<boolean>(true);
+  const isOn = useSharedValue(reminder);
   const [reminderDaysBefore, setReminderDaysBefore] = React.useState<number>(1);
   
   const [showDatePicker, setShowDatePicker] = React.useState<boolean>(false);
@@ -224,6 +229,72 @@ const add = () => {
             </Modal>
           )}
         </View>
+        <View style={[styles.reminderContainer, { backgroundColor: colorPalette.primary + '33', borderColor: colorPalette.primary }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
+              <View style={{ backgroundColor: colorPalette.primary + '33', borderRadius: 5, padding: 5, justifyContent: 'center', alignItems: 'center' }}>
+                <Ionicons name="notifications-outline" size={20} color={colorPalette.primary} />
+              </View>
+              <Text style={{ color: colorPalette.text, fontSize: 16, flexShrink: 1 }}>{t('addScreen.reminder')}</Text>
+            </View>
+            <SwitchButton 
+              value={isOn}
+              onPress={() => {
+                isOn.value = !isOn.value;
+                setReminder(!reminder);
+              }}
+              trackColors={{ on: colorPalette.primary, off: colorPalette.textSecondary }}
+            />
+          </View>
+          {reminder && (
+            <View style={{ marginTop: 10 }}>
+              <Text style={{ color: colorPalette.textSecondary, fontSize: 14, marginBottom: 5 }}>{t('addScreen.notifyMe')}</Text>
+              <Picker
+                selectedValue={reminderDaysBefore.toString()}
+                onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
+                style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
+                dropdownIconColor={colorPalette.text}
+                itemStyle={{ color: colorPalette.text, fontSize: 16 }}
+                mode='dropdown'
+                dropdownIconRippleColor={colorPalette.backgroundSecondary}
+                selectionColor={colorPalette.primary}
+              >
+                <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
+                <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
+                <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
+                <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
+              </Picker>
+            </View>
+          )}
+        </View>
+        <Pressable
+          style={{
+            shadowColor: colorPalette.primary,
+            shadowOffset: {
+              width: 2,
+              height: 5,
+            },
+            shadowOpacity: 0.27,
+            shadowRadius: 4.65,
+            elevation: 6,
+          }}
+        >
+          <LinearGradient 
+            colors={[colorPalette.primary, colorPalette.secondary]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              marginTop: 30,
+              marginBottom: 40,
+              paddingVertical: 15,
+              borderRadius: 10,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>{t('addScreen.add')}</Text>
+          </LinearGradient>
+        </Pressable>
       </View>
     </ScrollView>
   )
@@ -300,6 +371,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  reminderContainer: {
+    borderRadius: 8,
+    padding: 10,
+    borderWidth: 0.5,
   }
 })
 

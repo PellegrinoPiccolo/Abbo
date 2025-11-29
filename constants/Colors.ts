@@ -6,7 +6,7 @@ export const colorsThemePalette = {
     primary: '#0B61F7',
     secondary: '#00A63F',
     border: '#E5E7EB',
-    backgroundSecondary: '#F9FBFC',
+    backgroundSecondary: '#f3f9ffff',
     gradientColors: ['#2E6AF8', '#00C689']
   },
   dark: {
