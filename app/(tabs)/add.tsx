@@ -10,18 +10,22 @@ import SwitchButton from '../../components/SwitchButton';
 import { useSharedValue } from 'react-native-reanimated';
 import {Picker} from '@react-native-picker/picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import { SubscriptionType } from '../../types/SubscriptionType';
+import useSubs from '../../hook/SubsHook';
+import ToastManager, { Toast } from 'toastify-react-native'
 
 const add = () => {
 
-  const {colorPalette} = useTheme();
+  const {colorPalette, theme} = useTheme();
   const {t} = useTranslation();
+  const {addSub} = useSubs();
 
   const router = useRouter();
 
   const [name, setName] = React.useState<string>('');
-  const [description, setDescription] = React.useState<string>('');
+  const [description, setDescription] = React.useState<string | null>(null);
   const [price, setPrice] = React.useState<string>('');
-  const [link, setLink] = React.useState<string>('');
+  const [link, setLink] = React.useState<string | null>(null);
   const [billingCycle, setBillingCycle] = React.useState<string>('monthly');
   const [category, setCategory] = React.useState<string>('Entertainment');
   const [firstBillingDate, setFirstBillingDate] = React.useState<Date>(new Date());
@@ -30,6 +34,8 @@ const add = () => {
   const [reminderDaysBefore, setReminderDaysBefore] = React.useState<number>(1);
   
   const [showDatePicker, setShowDatePicker] = React.useState<boolean>(false);
+
+  const [errorMessage, setErrorMessage] = React.useState<string>('');
 
   const localDevice = getLocales()[0].languageCode;
 
@@ -46,7 +52,29 @@ const add = () => {
     router.back();
   }
 
+  const save = () => {
+    if(name.trim() === '' || price.trim() === '' || !billingCycle || !category || !firstBillingDate) {
+      Toast.error(t('addScreen.errors.requiredFields') || 'Please fill all required fields.');
+      return;
+    }
+    const newSub : SubscriptionType = {
+      id: Date.now().toString(),
+      name,
+      description,
+      price,
+      link,
+      billingCycle: billingCycle as 'monthly' | 'yearly',
+      category: category as 'Entertainment' | 'Productivity' | 'Education' | 'Health' | 'Work' | 'Home' | 'Other',
+      firstBillingDate,
+      reminder,
+      reminderDaysBefore,
+    }
+    addSub(newSub);
+    close();
+  }
+
   return (
+    <>
     <ScrollView style={{ 
       flex: 1, 
       backgroundColor: colorPalette.background,
@@ -105,7 +133,7 @@ const add = () => {
           <Text style={[styles.label, { color: colorPalette.text }]}>{t('addScreen.description')}</Text>
           <View style={[styles.input, { backgroundColor: colorPalette.backgroundSecondary }]} >
             <TextInput
-              value={description}
+              value={description || ''}
               onChangeText={setDescription}
               placeholder={t('addScreen.descriptionPlaceholder') || ''}
               placeholderTextColor={colorPalette.textSecondary}
@@ -124,7 +152,7 @@ const add = () => {
             }}>{localDevice === 'en' ? '$' : '€'}</Text>
             <TextInput
               value={price}
-              onChangeText={setPrice}
+              onChangeText={(text) => setPrice(text.replace(',', '.').replace(/[^0-9,.]/g, '').replace(/(\..*)\./g, '$1'))}
               placeholder={'0.00'}
               placeholderTextColor={colorPalette.textSecondary}
               keyboardType='decimal-pad'
@@ -136,7 +164,7 @@ const add = () => {
           <Text style={[styles.label, { color: colorPalette.text }]}>{t('addScreen.link')}</Text>
           <View style={[styles.input, { backgroundColor: colorPalette.backgroundSecondary }]} >
             <TextInput
-              value={link}
+              value={link || ''}
               onChangeText={setLink}
               placeholder={'https://'}
               placeholderTextColor={colorPalette.textSecondary}
@@ -278,6 +306,7 @@ const add = () => {
             shadowRadius: 4.65,
             elevation: 6,
           }}
+          onPress={save}
         >
           <LinearGradient 
             colors={[colorPalette.primary, colorPalette.secondary]}
@@ -297,6 +326,8 @@ const add = () => {
         </Pressable>
       </View>
     </ScrollView>
+    <ToastManager position="top" theme={theme === 'dark' ? 'dark' : 'light'} />
+    </>
   )
 }
 

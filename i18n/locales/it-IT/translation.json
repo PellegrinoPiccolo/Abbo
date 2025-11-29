@@ -24,7 +24,10 @@
         "addButton": "Aggiungi Abbonamento",
         "selectDate": "Seleziona una data",
         "done": "Fatto",
-        "add": "Aggiungi Abbonamento"
+        "add": "Aggiungi Abbonamento",
+        "errors": {
+            "requiredFields": "Per favore, compila tutti i campi obbligatori."
+        }
     },
     "billingCycle": {
         "monthly": "Mensile",
@@ -35,11 +38,8 @@
         "Productivity": "Produttività",
         "Health": "Salute",
         "Education": "Istruzione",
-        "News": "Notizie",
-        "Music": "Musica",
-        "Video Streaming": "Streaming Video",
-        "Cloud Storage": "Archiviazione Cloud",
-        "Gaming": "Giochi",
+        "Work": "Lavoro",
+        "Home": "Casa",
         "Other": "Altro"
     }
 }
