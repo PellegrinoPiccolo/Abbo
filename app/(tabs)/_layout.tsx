@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import { SplashScreen, Tabs, useRouter } from 'expo-router'
 import TabBarButton from '../../components/TabBarButton'
 import useTheme from '../../hook/ThemeHook'
@@ -13,6 +13,10 @@ import BedTime from '../../assets/icons/bedtime.svg'
 import NativeButton from '../../components/NativeButton'
 import useSubs from '../../hook/SubsHook'
 import { useTranslation } from 'react-i18next'
+import Logo from '../../assets/icon.png'
+import { BlurView } from 'expo-blur'
+import { LinearGradient } from 'expo-linear-gradient'
+import MaskedView from '@react-native-masked-view/masked-view'
 
 const _layout = () => {
 
@@ -41,22 +45,88 @@ const _layout = () => {
         headerShown: true, 
         headerTitleAlign: 'left',
         headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: colorPalette.background,
-          borderBottomColor: colorPalette.border,
-          borderBottomWidth: 1,
-        },
-        headerTitleStyle: {
-          color: colorPalette.text,
-          fontSize: 18,
-        },
-        headerRight: () => (
-          <NativeButton pressFunction={() => changeTheme(theme === 'light' ? 'dark' : 'light', 'manual')}>
-            <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-              {theme === 'light' ? <BedTime width={20} height={20} fill={colorPalette.text} /> : 
-              <WbSun width={20} height={20} fill={colorPalette.text} /> }
+        header: () => (
+          <BlurView intensity={50} style={{ flex: 1 }}>
+            <View style={{ 
+              height: 60 + insets.top, 
+              paddingTop: insets.top, 
+              flexDirection: 'row', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              paddingHorizontal: 10,
+              borderBottomColor: colorPalette.border,
+              borderBottomWidth: 1,
+              backgroundColor: colorPalette.background + 'CC' // CC for some transparency
+            }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{
+                  shadowColor: colorPalette.primary,
+                  shadowOffset: {
+                    width: 0,
+                    height: 3,
+                  },
+                  shadowOpacity: 0.27,
+                  shadowRadius: 4.65,
+                  elevation: 6,
+                  backgroundColor: 'transparent',
+                  borderRadius: 19,
+                }}>
+                  <LinearGradient
+                    colors={[colorPalette.gradientColors[0], colorPalette.gradientColors[1]]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={{ 
+                      borderWidth: 2, 
+                      borderColor: 'transparent', 
+                      borderRadius: 19,
+                      backgroundColor: colorPalette.background
+                    }}
+                  >
+                    <View style={{
+                      padding: 5, 
+                      backgroundColor: colorPalette.background, 
+                      borderRadius: 15, 
+                      margin: 1
+                    }}>
+                      <Image source={Logo} style={{ width: 30, height: 30, borderRadius: 5 }} />
+                    </View>
+                  </LinearGradient>
+                </View>
+                <MaskedView
+                  style={{ marginLeft: 10 }}
+                  maskElement={
+                    <Text style={{
+                      fontSize: 20,
+                      fontWeight: 'normal',
+                      color: 'black'
+                    }}>
+                      Sub Track
+                    </Text>
+                  }
+                >
+                  <LinearGradient
+                    colors={[colorPalette.gradientColors[0], colorPalette.gradientColors[1]]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                  >
+                    <Text style={{
+                      fontSize: 20,
+                      fontWeight: 'normal',
+                      opacity: 0
+                    }}>
+                      Sub Track
+                    </Text>
+                  </LinearGradient>
+                </MaskedView>
+              </View>
+              <NativeButton pressFunction={() => changeTheme(theme === 'light' ? 'dark' : 'light', 'manual')}>
+                <View style={{ paddingHorizontal: 10, paddingVertical: 10, backgroundColor: colorPalette.backgroundSecondary, borderRadius: 10 }}>
+                  {theme === 'light' ? <BedTime width={20} height={20} fill={colorPalette.text} /> : 
+                  <WbSun width={20} height={20} fill={colorPalette.text} /> }
+                </View>
+              </NativeButton>
             </View>
-          </NativeButton>
+          </BlurView>
         ),
         tabBarInactiveTintColor: colorPalette.textSecondary,
         tabBarActiveTintColor: colorPalette.primary,
