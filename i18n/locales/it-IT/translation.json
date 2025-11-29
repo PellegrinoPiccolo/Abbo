@@ -3,5 +3,43 @@
         "home": "Home",
         "categories": "Categorie",
         "add": "Aggiungi Abbonamento"
+    },
+    "addScreen": {
+        "title": "Aggiungi Abbonamento",
+        "subTitle": "Inserisci i dettagli del tuo abbonamento qui",
+        "name": "Nome del Servizio",
+        "description": "Descrizione del Servizio",
+        "descriptionPlaceholder": "Ad esempio, Piano Premium, Piano Famiglia, ecc.",
+        "price": "Prezzo",
+        "billingCycle": "Ciclo di Fatturazione",
+        "link": "Link al Servizio",
+        "category": "Categoria",
+        "firstBillingDate": "Data del Primo Addebito",
+        "reminder": "Avvisami",
+        "notifyMe": "Notificami",
+        "dayBefore": "giorno prima",
+        "daysBefore": "giorni prima",
+        "weekBefore": "settimana prima",
+        "weeksBefore": "settimane prima",
+        "addButton": "Aggiungi Abbonamento",
+        "selectDate": "Seleziona una data",
+        "done": "Fatto",
+        "add": "Aggiungi Abbonamento",
+        "errors": {
+            "requiredFields": "Per favore, compila tutti i campi obbligatori."
+        }
+    },
+    "billingCycle": {
+        "monthly": "Mensile",
+        "yearly": "Annuale"
+    },
+    "categories": {
+        "Entertainment": "Intrattenimento",
+        "Productivity": "Produttività",
+        "Health": "Salute",
+        "Education": "Istruzione",
+        "Work": "Lavoro",
+        "Home": "Casa",
+        "Other": "Altro"
     }
 }
