@@ -64,7 +64,7 @@ const add = () => {
       price,
       link,
       billingCycle: billingCycle as 'monthly' | 'yearly',
-      category: category as 'Entertainment' | 'Productivity' | 'Education' | 'Health' | 'Work' | 'Home' | 'Other',
+      category: category as 'Entertainment' | 'Productivity' | 'Education' | 'Fittnes&Health' | 'Work' | 'Home' | 'Other',
       firstBillingDate,
       reminder,
       reminderDaysBefore,

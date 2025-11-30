@@ -242,17 +242,23 @@ const Home = () => {
     )
   }
 
+  const SubComponent = ({sub}: {sub: SubscriptionType}) => {
+    return (
+      <View style={{ padding: 16, marginBottom: 5, borderColor: colorPalette.border, borderBottomWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
+        <Text style={{ color: colorPalette.text, fontSize: 18, fontWeight: '600' }}>{sub.name}</Text>
+        <Text style={{ color: colorPalette.textSecondary, fontSize: 14, marginTop: 4 }}>
+          {`${getLocales()[0].currencySymbol}${sub.price} - ${sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : t('home.yearly', 'Yearly')}`}
+        </Text>
+      </View>
+    )
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: colorPalette.background }}>
       <FlashList
         data={subs}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: colorPalette.border }}>
-            <Text style={{ color: colorPalette.text, fontSize: 18 }}>{item.name}</Text>
-            <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{item.description}</Text>
-          </View>
-        )}
+        renderItem={({ item }) => <SubComponent sub={item} />}
         // @ts-ignore: estimatedItemSize is not present in current FlashList props typings
         estimatedItemSize={100}
         contentContainerStyle={{ backgroundColor: colorPalette.background }}
