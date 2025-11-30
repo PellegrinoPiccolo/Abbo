@@ -76,6 +76,16 @@ const Home = () => {
     }
   }
 
+  const sortByDifferenceByToday = (a: SubscriptionType, b: SubscriptionType) => {
+    const diffA = calcDifferenceByToday(a);
+    const diffB = calcDifferenceByToday(b);
+
+    const daysA = diffA === t('home.today', 'Today') ? 0 : diffA === t('home.tomorrow', 'Tomorrow') ? 1 : parseInt(diffA.split(' ')[0]);
+    const daysB = diffB === t('home.today', 'Today') ? 0 : diffB === t('home.tomorrow', 'Tomorrow') ? 1 : parseInt(diffB.split(' ')[0]);
+
+    return daysA - daysB;
+  }
+
   const ListEmptyComponent = () => {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
@@ -339,7 +349,7 @@ const Home = () => {
   return (
     <View style={{ flex: 1, backgroundColor: colorPalette.background }}>
       <FlashList
-        data={subs}
+        data={subs.sort(sortByDifferenceByToday)}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <SubComponent sub={item} />}
         // @ts-ignore: estimatedItemSize is not present in current FlashList props typings
