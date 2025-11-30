@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import useTheme from '../../hook/ThemeHook';
 import useSubs from '../../hook/SubsHook';
 import { FlashList } from "@shopify/flash-list";
@@ -12,6 +12,7 @@ import { getLocales } from 'expo-localization';
 import { SubscriptionType } from '../../types/SubscriptionType';
 import CurrencyExchange from '../../assets/icons/currency_exchange.svg';
 import CalendarToday from '../../assets/icons/calendar_today.svg';
+import { ImageForCategory } from '../../constants/ImageForCategory';
 
 const Home = () => {
 
@@ -40,6 +41,39 @@ const Home = () => {
       }
       return total;
     }, 0);
+  }
+
+  const calcDifferenceByToday = (sub: SubscriptionType) => {
+    const today = new Date();
+    const firstBillingDate = new Date(sub.firstBillingDate);
+    let nextBillingDate = new Date(firstBillingDate);
+    let differenceOfDays = 0;
+    // Adjust next billing date to be in the future
+    while (nextBillingDate < today) {
+      if (sub.billingCycle === 'monthly') {
+        nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
+        differenceOfDays = Math.ceil((nextBillingDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      } else if (sub.billingCycle === 'yearly') {
+        nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
+        differenceOfDays = Math.ceil((nextBillingDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      }
+    }
+
+    return differenceOfDays === 0 ? t('home.today', 'Today') : differenceOfDays === 1 ? t('home.tomorrow', 'Tomorrow') : `${differenceOfDays} ${t('home.days', 'days')}`;
+  }
+
+  const getColorByDifferenceOfDays = (sub: SubscriptionType) => {
+    const diff = calcDifferenceByToday(sub);
+    if (diff === t('home.today', 'Today') || diff === t('home.tomorrow', 'Tomorrow')) {
+      return colorPalette.red;
+    } else {
+      const days = parseInt(diff.split(' ')[0]);
+      if (days <= 7) {
+        return colorPalette.orange;
+      } else {
+        return colorPalette.secondary;
+      }
+    }
   }
 
   const ListEmptyComponent = () => {
@@ -245,10 +279,59 @@ const Home = () => {
   const SubComponent = ({sub}: {sub: SubscriptionType}) => {
     return (
       <View style={{ padding: 16, marginBottom: 5, borderColor: colorPalette.border, borderBottomWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
-        <Text style={{ color: colorPalette.text, fontSize: 18, fontWeight: '600' }}>{sub.name}</Text>
-        <Text style={{ color: colorPalette.textSecondary, fontSize: 14, marginTop: 4 }}>
-          {`${getLocales()[0].currencySymbol}${sub.price} - ${sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : t('home.yearly', 'Yearly')}`}
-        </Text>
+        <View style={{flexDirection: 'row', alignItems: 'flex-start', marginBottom: 10}}>
+          <View style={{
+            backgroundColor: colorPalette.primary + '20', 
+            padding: 10, 
+            borderRadius: 10,
+            marginRight: 10,
+          }}>
+            <Image source={ImageForCategory[sub.category]} style={{ width: 34, height: 34}} />
+          </View>
+          <View style={{flexDirection: 'column', flex: 1}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, alignItems: 'flex-start'}}>
+              <Text style={{ color: colorPalette.text, fontSize: 18, fontWeight: '600' }}>{sub.name}</Text>
+              <View style={{ flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                <Text style={{ color: colorPalette.text, fontSize: 18, marginTop: 4 }}>
+                  {`${getLocales()[0].currencySymbol}${sub.price}`}
+                </Text>
+                <Text style={{ color: colorPalette.textSecondary, fontSize: 12, marginTop: 4 }}>
+                  /{sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : t('home.yearly', 'Yearly')}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'column', marginTop: 10 }}>
+              {sub.category && (
+                <View style={{ 
+                  backgroundColor: colorPalette.primary + '20', 
+                  paddingHorizontal: 8, 
+                  paddingVertical: 4, 
+                  borderRadius: 10, 
+                  alignSelf: 'flex-start',
+                  marginBottom: 5,
+                }}>
+                  <Text style={{ color: colorPalette.primary, fontSize: 12 }}>
+                    {t(`categories.${sub.category}`, sub.category)}
+                  </Text>
+                </View>
+              )}
+              {sub.firstBillingDate && (
+                <View style={{ 
+                  backgroundColor: getColorByDifferenceOfDays(sub) + '20', 
+                  paddingHorizontal: 8, 
+                  paddingVertical: 4, 
+                  borderRadius: 10, 
+                  alignSelf: 'flex-start',
+                  marginBottom: 5,
+                }}>
+                  <Text style={{ color: getColorByDifferenceOfDays(sub), fontSize: 12 }}>
+                    {t('home.nextBilling', 'Next billing: {{date}}', {date: calcDifferenceByToday(sub)})}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+        </View>
       </View>
     )
   }

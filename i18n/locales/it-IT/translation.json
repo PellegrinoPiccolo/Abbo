@@ -56,6 +56,12 @@
         "totalYearly": "Spesa Annuale Totale",
         "acrossAllSubscriptions": "attraverso {{number}} abbonamenti/o",
         "activeSubscriptions": "Abbonamenti attivi",
-        "totalSubs": "{{count}} totali"
+        "totalSubs": "{{count}} totali",
+        "monthly": "Mensile",
+        "yearly": "Annuale",
+        "nextBilling": "Prossimo addebito: {{date}}",
+        "days": "giorni",
+        "today": "oggi",
+        "tomorrow": "domani"
     }
 }
