@@ -63,5 +63,9 @@
         "days": "giorni",
         "today": "oggi",
         "tomorrow": "domani"
+    },
+    "category": {
+        "title": "Categorie",
+        "description": "Visualizza i tuoi abbonamenti per categoria."
     }
 }
