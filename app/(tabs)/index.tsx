@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image, Pressable, Text, View } from 'react-native'
 import useTheme from '../../hook/ThemeHook';
 import useSubs from '../../hook/SubsHook';
 import { FlashList } from "@shopify/flash-list";
@@ -13,6 +13,7 @@ import { SubscriptionType } from '../../types/SubscriptionType';
 import CurrencyExchange from '../../assets/icons/currency_exchange.svg';
 import CalendarToday from '../../assets/icons/calendar_today.svg';
 import { ImageForCategory } from '../../constants/ImageForCategory';
+import { useRouter } from 'expo-router';
 
 const Home = () => {
 
@@ -20,6 +21,8 @@ const Home = () => {
   const {subs} = useSubs();
 
   const {t} = useTranslation();
+
+  const router = useRouter();
 
   const calculateMonthlyPrice = (subs: SubscriptionType[]) => {
     return subs.reduce((total, sub) => {
@@ -84,6 +87,13 @@ const Home = () => {
     const daysB = diffB === t('home.today', 'Today') ? 0 : diffB === t('home.tomorrow', 'Tomorrow') ? 1 : parseInt(diffB.split(' ')[0]);
 
     return daysA - daysB;
+  }
+
+  const navigateToSub = (sub: SubscriptionType) => {
+    router.push({
+      pathname: '/viewSub',
+      params: { sub: JSON.stringify(sub) },
+    });
   }
 
   const ListEmptyComponent = () => {
@@ -288,7 +298,7 @@ const Home = () => {
 
   const SubComponent = ({sub}: {sub: SubscriptionType}) => {
     return (
-      <View style={{ padding: 16, marginBottom: 10, borderColor: colorPalette.border, borderWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
+      <Pressable onPress={() => navigateToSub(sub)} style={{ padding: 16, marginBottom: 10, borderColor: colorPalette.border, borderWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
         <View style={{flexDirection: 'row', alignItems: 'flex-start', marginBottom: 10}}>
           <View style={{
             backgroundColor: colorPalette.primary + '20', 
@@ -342,7 +352,7 @@ const Home = () => {
             </View>
           </View>
         </View>
-      </View>
+      </Pressable>
     )
   }
 
@@ -354,7 +364,7 @@ const Home = () => {
         renderItem={({ item }) => <SubComponent sub={item} />}
         // @ts-ignore: estimatedItemSize is not present in current FlashList props typings
         estimatedItemSize={100}
-        contentContainerStyle={{ backgroundColor: colorPalette.background }}
+        contentContainerStyle={{ backgroundColor: colorPalette.background, paddingBottom: 40 }}
         ListEmptyComponent={ListEmptyComponent}
         ListHeaderComponent={ListHeaderComponent}
         />
