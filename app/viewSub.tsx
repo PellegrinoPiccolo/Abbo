@@ -16,6 +16,7 @@ import { Picker } from '@react-native-picker/picker';
 import ToastManager, { Toast } from 'toastify-react-native';
 import NativeButton from '../components/NativeButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Linking from 'expo-linking';
 
 const ViewSub = () => {
   const { colorPalette, theme } = useTheme();
@@ -213,9 +214,17 @@ const ViewSub = () => {
                     </View>
                     <View style={styles.infoContent}>
                       <Text style={[styles.infoLabel, { color: colorPalette.textSecondary }]}>{t('viewSub.link')}</Text>
-                      <Text style={[styles.infoValue, { color: colorPalette.primary }]} numberOfLines={1}>
-                        {subscription.link}
-                      </Text>
+                      <Pressable onPress={() => {
+                        let url = subscription.link || '';
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                          url = 'https://' + url;
+                        }
+                        Linking.openURL(url);
+                      }}>
+                        <Text style={[styles.infoValue, { color: colorPalette.primary }]} numberOfLines={1}>
+                          {subscription.link}
+                        </Text>
+                      </Pressable>
                     </View>
                   </View>
                 )}
