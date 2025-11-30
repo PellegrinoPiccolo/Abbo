@@ -40,7 +40,8 @@
         "Education": "Istruzione",
         "Work": "Lavoro",
         "Home": "Casa",
-        "Other": "Altro"
+        "Other": "Altro",
+        "noData": "Nessun abbonamento disponibile per mostrare le categorie."
     },
     "home": {
         "noSubscriptionsTitle": "Ancora nessun abbonamento",
