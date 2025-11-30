@@ -200,7 +200,7 @@ const Home = () => {
       return null;
     }
     return (
-      <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: colorPalette.border, backgroundColor: colorPalette.background }}>
+      <View style={{ padding: 16, backgroundColor: colorPalette.background }}>
         <View style={{
           shadowColor: colorPalette.primary,
           shadowOffset: {
@@ -278,7 +278,7 @@ const Home = () => {
 
   const SubComponent = ({sub}: {sub: SubscriptionType}) => {
     return (
-      <View style={{ padding: 16, marginBottom: 5, borderColor: colorPalette.border, borderBottomWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
+      <View style={{ padding: 16, marginBottom: 10, borderColor: colorPalette.border, borderWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
         <View style={{flexDirection: 'row', alignItems: 'flex-start', marginBottom: 10}}>
           <View style={{
             backgroundColor: colorPalette.primary + '20', 
