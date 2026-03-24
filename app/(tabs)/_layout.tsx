@@ -98,7 +98,7 @@ const _layout = () => {
                     fontWeight: 'normal',
                     color: 'black'
                   }}>
-                    Sub Track
+                    SubTrack
                   </Text>
                 }
               >
@@ -112,7 +112,7 @@ const _layout = () => {
                     fontWeight: 'normal',
                     opacity: 0
                   }}>
-                    Sub Track
+                    SubTrack
                   </Text>
                 </LinearGradient>
               </MaskedView>
