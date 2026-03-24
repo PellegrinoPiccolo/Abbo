@@ -15,9 +15,10 @@ const PRESET_COLORS = [
 interface Props {
   selectedLabelIds: string[]
   onToggleLabel: (labelId: string) => void
+  setSelectedLabelIds: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-const LabelsPicker = ({ selectedLabelIds, onToggleLabel }: Props) => {
+const LabelsPicker = ({ selectedLabelIds, onToggleLabel, setSelectedLabelIds }: Props) => {
   const { t } = useTranslation()
   const { colorPalette } = useTheme()
   const { labels, createLabel, deleteLabel } = useSubs()
@@ -34,6 +35,7 @@ const LabelsPicker = ({ selectedLabelIds, onToggleLabel }: Props) => {
       color: newColor,
     }
     createLabel?.(label)
+    setSelectedLabelIds((prev) => [...prev, label.id])
     setNewName('')
     setNewColor(PRESET_COLORS[0])
     setShowForm(false)
@@ -54,7 +56,10 @@ const LabelsPicker = ({ selectedLabelIds, onToggleLabel }: Props) => {
             <Pressable
               key={label.id}
               onPress={() => onToggleLabel(label.id)}
-              onLongPress={() => deleteLabel?.(label.id)}
+              onLongPress={() => {
+                deleteLabel?.(label.id)
+                setSelectedLabelIds((prev) => prev.filter((l) => l !== label.id))
+              }}
               style={[
                 styles.chip,
                 {

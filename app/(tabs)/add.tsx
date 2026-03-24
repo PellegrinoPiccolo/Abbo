@@ -205,6 +205,7 @@ const add = () => {
           <Text style={[styles.label, { color: colorPalette.text }]}>{t('label.add')}</Text>
           <LabelsPicker
             selectedLabelIds={selectedLabels}
+            setSelectedLabelIds={setSelectedLabels}
             onToggleLabel={(id) =>
               setSelectedLabels((prev) =>
                 prev.includes(id) ? prev.filter((l) => l !== id) : [...prev, id]
