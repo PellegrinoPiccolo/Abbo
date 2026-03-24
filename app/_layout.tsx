@@ -3,12 +3,14 @@ import React, { useContext, useEffect } from 'react'
 import { Platform, StatusBar } from 'react-native'
 import ThemeProvider, { ThemeContext } from '../context/ThemeContext'
 import SubsProvider from '../context/SubsContext'
-import '../i18n'
+import i18n from '../i18n'
+import { I18nextProvider } from 'react-i18next'
 import * as Notifications from 'expo-notifications';
 import * as SystemUI from 'expo-system-ui';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as Updates from 'expo-updates';
 import { registerForPushNotificationsAsync } from '../utils/notificationsChannel'
+import MenuProvider from '../context/MenuContext'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -84,11 +86,15 @@ const RootLayout = () => {
 
 const _layout = () => {
   return (
-    <ThemeProvider>
-      <SubsProvider>
-        <RootLayout />
-      </SubsProvider>
-    </ThemeProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider>
+        <SubsProvider>
+          <MenuProvider>
+            <RootLayout />
+          </MenuProvider>
+        </SubsProvider>
+      </ThemeProvider>
+    </I18nextProvider>
   )
 }
 
