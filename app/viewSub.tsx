@@ -15,7 +15,6 @@ import SwitchButton from '../components/SwitchButton';
 import { useSharedValue } from 'react-native-reanimated';
 import { Picker } from '@react-native-picker/picker';
 import ToastManager, { Toast } from 'toastify-react-native';
-import NativeButton from '../components/NativeButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 
