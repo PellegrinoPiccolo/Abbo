@@ -17,6 +17,7 @@ In a world full of micro-transactions, it's easy to lose track of where your mon
 
 * **📊 Expense Dashboard:** Get a crystal-clear overview of your fixed costs. Instantly view your total monthly and annual spending cap.
 * **🔔 Smart Expiration Alerts:** Receive customizable local push notifications (e.g., 1 day before renewal) so you never get charged unexpectedly.
+* **🏷️ Labels:** Create and assign custom color-coded labels to your subscriptions for flexible, personalized organization beyond standard categories.
 * **wm Categories:** Organize your subscriptions by type (Entertainment, Work, Home, Utilities) to see exactly which area of your life costs the most.
 * **🔒 Privacy First (Local Storage):** Your financial data is yours alone. Sub Track uses **AsyncStorage** to keep all data locally on your device. No external servers, no cloud tracking.
 
