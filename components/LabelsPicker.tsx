@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import useTheme from '../hook/ThemeHook'
 import useSubs from '../hook/SubsHook'
 import { LabelsType } from '../types/LabelsType'
+import * as Crypto from 'expo-crypto';
 
 const PRESET_COLORS = [
   '#EF4444', '#F97316', '#EAB308', '#22C55E',
@@ -28,7 +29,7 @@ const LabelsPicker = ({ selectedLabelIds, onToggleLabel }: Props) => {
   const handleCreate = () => {
     if (!newName.trim()) return
     const label: LabelsType = {
-      id: Date.now().toString(),
+      id: Crypto.randomUUID(),
       name: newName.trim(),
       color: newColor,
     }
