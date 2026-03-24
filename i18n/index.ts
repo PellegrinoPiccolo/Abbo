@@ -17,23 +17,19 @@ const resources = {
   "fr-FR": { translation: translationFr },
 };
 
-const initI18n = async () => {
-  let savedLanguage = await AsyncStorage.getItem("language");
+i18n.use(initReactI18next).init({
+  resources,
+  lng: getLocales()[0].languageTag,
+  fallbackLng: "en-US",
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
-  if (!savedLanguage) {
-    savedLanguage = getLocales()[0].languageTag;
+AsyncStorage.getItem("language").then((savedLanguage) => {
+  if (savedLanguage && savedLanguage !== i18n.language) {
+    i18n.changeLanguage(savedLanguage);
   }
-
-  i18n.use(initReactI18next).init({
-    resources,
-    lng: savedLanguage,
-    fallbackLng: "en-US",
-    interpolation: {
-      escapeValue: false,
-    },
-  });
-};
-
-initI18n();
+});
 
 export default i18n;

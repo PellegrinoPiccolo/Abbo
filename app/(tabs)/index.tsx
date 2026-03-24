@@ -366,7 +366,7 @@ const Home = () => {
         )}
       </View>
     )
-  }, [subs, labels, activeLabel, colorPalette])
+  }, [subs, labels, activeLabel, colorPalette, t])
 
   const SubComponent = ({sub}: {sub: SubscriptionType}) => {
     return (
