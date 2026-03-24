@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Image, Platform, Text, View } from 'react-native'
+import { Image, Platform, Pressable, Text, View } from 'react-native'
 import { SplashScreen, Tabs, useRouter } from 'expo-router'
 import TabBarButton from '../../components/TabBarButton'
 import useTheme from '../../hook/ThemeHook'
@@ -8,9 +8,6 @@ import HomeIcon from '../../assets/icons/home.svg'
 import HomeFilled from '../../assets/icons/home_filled.svg'
 import LeaderBoard from '../../assets/icons/leaderboard.svg'
 import LeaderBoardFilled from '../../assets/icons/leaderboard_filled.svg'
-import WbSun from '../../assets/icons/wb_sunny.svg'
-import BedTime from '../../assets/icons/bedtime.svg'
-import NativeButton from '../../components/NativeButton'
 import useSubs from '../../hook/SubsHook'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../assets/icon.png'
@@ -27,7 +24,7 @@ const _layout = () => {
 
   SplashScreen.preventAutoHideAsync();
 
-  const {colorPalette, theme, changeTheme, loadingTheme} = useTheme();
+  const {colorPalette, loadingTheme} = useTheme();
   const {loadingSubs} = useSubs();
   const insets = useSafeAreaInsets();
 
@@ -120,11 +117,11 @@ const _layout = () => {
                 </LinearGradient>
               </MaskedView>
             </View>
-            <NativeButton pressFunction={() => menu.openMenu()}>
+            <Pressable onPress={() => menu.openMenu()}>
               <View style={{ paddingHorizontal: 10, paddingVertical: 10, backgroundColor: colorPalette.backgroundSecondary, borderRadius: 10 }}>
                 <Menu width={20} height={20} fill={colorPalette.text} />
               </View>
-            </NativeButton>
+            </Pressable>
           </View>
         ),
         tabBarInactiveTintColor: colorPalette.textSecondary,
