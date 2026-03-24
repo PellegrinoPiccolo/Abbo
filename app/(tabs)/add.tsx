@@ -278,6 +278,7 @@ const add = () => {
               </TouchableWithoutFeedback>
             </Modal>
           )}
+          <Text style={{ color: colorPalette.textSecondary, fontSize: 12, marginTop: 6 }}>{t('addScreen.firstBillingDateHint')}</Text>
         </View>
         <View style={[styles.reminderContainer, { backgroundColor: colorPalette.primary + '33', borderColor: colorPalette.primary }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

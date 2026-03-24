@@ -462,6 +462,7 @@ const ViewSub = () => {
                     </TouchableWithoutFeedback>
                   </Modal>
                 )}
+                <Text style={{ color: colorPalette.textSecondary, fontSize: 12, marginTop: 6 }}>{t('viewSub.firstBillingDateHint')}</Text>
               </View>
 
               {/* Reminder */}
