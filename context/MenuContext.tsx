@@ -6,6 +6,8 @@ import { scheduleOnRN } from "react-native-worklets";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import useTheme from "../hook/ThemeHook";
+import useCurrency from "../hook/CurrencyHook";
+import { CURRENCIES } from "./CurrencyContext";
 import WbSun from "../assets/icons/wb_sunny.svg";
 import BedTime from "../assets/icons/bedtime.svg";
 
@@ -29,6 +31,7 @@ const LANGUAGES = [
 const MenuProvider = ({ children }: { children: ReactNode }) => {
   const { colorPalette, theme, changeTheme } = useTheme();
   const { t } = useTranslation();
+  const { currencyCode, setCurrency } = useCurrency();
   const [currentLang, setCurrentLang] = useState(i18n.language);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -132,7 +135,7 @@ const MenuProvider = ({ children }: { children: ReactNode }) => {
             <Text style={{ color: colorPalette.textSecondary, fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 10 }}>
                 {t('menu.language').toUpperCase()}
             </Text>
-            <View style={{ flexDirection: 'row', backgroundColor: colorPalette.backgroundSecondary, borderRadius: 12, padding: 4 }}>
+            <View style={{ flexDirection: 'row', backgroundColor: colorPalette.backgroundSecondary, borderRadius: 12, padding: 4, marginBottom: 28 }}>
                 {LANGUAGES.map(({ code, label }) => {
                     const isActive = currentLang === code;
                     return (
@@ -159,6 +162,39 @@ const MenuProvider = ({ children }: { children: ReactNode }) => {
                         >
                             <Text style={{ fontSize: 12, fontWeight: '500', color: isActive ? colorPalette.primary : colorPalette.textSecondary }}>
                                 {label}
+                            </Text>
+                        </TouchableOpacity>
+                    );
+                })}
+            </View>
+
+            {/* Currency */}
+            <Text style={{ color: colorPalette.textSecondary, fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 10 }}>
+                {t('menu.currency').toUpperCase()}
+            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+                {CURRENCIES.map(({ code, symbol }) => {
+                    const isActive = currencyCode === code;
+                    return (
+                        <TouchableOpacity
+                            key={code}
+                            onPress={() => setCurrency(code)}
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                paddingHorizontal: 10,
+                                paddingVertical: 8,
+                                borderRadius: 9,
+                                backgroundColor: isActive ? colorPalette.primary + '20' : colorPalette.backgroundSecondary,
+                                borderWidth: 1,
+                                borderColor: isActive ? colorPalette.primary : colorPalette.border,
+                            }}
+                        >
+                            <Text style={{ fontSize: 11, fontWeight: '700', color: isActive ? colorPalette.primary : colorPalette.textSecondary }}>
+                                {code}
+                            </Text>
+                            <Text style={{ fontSize: 13, fontWeight: '500', color: isActive ? colorPalette.primary : colorPalette.textSecondary }}>
+                                {symbol}
                             </Text>
                         </TouchableOpacity>
                     );
