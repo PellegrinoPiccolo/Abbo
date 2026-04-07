@@ -38,7 +38,7 @@
     "categories": {
         "Entertainment": "Intrattenimento",
         "Productivity": "Produttività",
-        "Fittnes&Health": "Fittnes e Salute",
+        "Fittnes&Health": "Fitness e Salute",
         "Education": "Istruzione",
         "Work": "Lavoro",
         "Home": "Casa",
@@ -56,7 +56,7 @@
         "clickToAdd": "Clicca il pulsante '+' per aggiungere il tuo primo abbonamento.",
         "totalMonthly": "Spesa Mensile Totale",
         "totalYearly": "Spesa Annuale Totale",
-        "acrossAllSubscriptions": "attraverso {{number}} abbonamenti/o",
+        "acrossAllSubscriptions": "su {{number}} abbonamento/i",
         "activeSubscriptions": "Abbonamenti attivi",
         "totalSubs": "{{count}} totali",
         "monthly": "Mensile",

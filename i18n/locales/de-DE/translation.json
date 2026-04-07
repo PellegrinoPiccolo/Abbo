@@ -2,8 +2,7 @@
     "tabBar": {
         "home": "Home",
         "categories": "Kategorien",
-        "wallet": "Geldbörse",
-        "add": "Abo hinzufügen"
+        "wallet": "Geldbörse"
     },
     "addScreen": {
         "title": "Abo hinzufügen",

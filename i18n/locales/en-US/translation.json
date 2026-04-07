@@ -2,8 +2,7 @@
     "tabBar": {
         "home": "Home",
         "categories": "Categories",
-        "wallet": "Wallet",
-        "add": "Add Subscription"
+        "wallet": "Wallet"
     },
     "addScreen": {
         "title": "Add Subscription",
@@ -54,7 +53,7 @@
         "getRemindersMessage": "Never miss a billing date with our helpful reminders.",
         "analyzeCategories": "Analyze categories.",
         "analyzeCategoriesMessage": "See where you're spending the most and optimize your subscriptions.",
-        "clickToAdd": "Click the '+' button to add your first subscription.",
+        "clickToAdd": "Tap the '+' button to add your first subscription.",
         "totalMonthly": "Total Monthly Spending",
         "totalYearly": "Total Yearly Spending",
         "acrossAllSubscriptions": "across {{number}} subscription(s)",

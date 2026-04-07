@@ -2,8 +2,7 @@
     "tabBar": {
         "home": "Inicio",
         "categories": "Categorías",
-        "wallet": "Cartera",
-        "add": "Añadir Suscripción"
+        "wallet": "Cartera"
     },
     "addScreen": {
         "title": "Añadir Suscripción",
