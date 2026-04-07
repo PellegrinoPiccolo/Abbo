@@ -33,11 +33,11 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.pellegrinopiccolo.subtrack",
-      "supportsTablet": false
+      "package": "com.pellegrinopiccolo.subtrack"
     },
     "plugins": [
       "expo-router",
+      "./plugins/withAndroidPhoneOnly",
       "expo-localization",
       [
         "expo-splash-screen",
