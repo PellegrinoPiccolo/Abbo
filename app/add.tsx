@@ -217,7 +217,7 @@ const add = () => {
           <Pressable style={[styles.input, { backgroundColor: colorPalette.backgroundSecondary, paddingVertical: 20 }]} onPress={() => setShowDatePicker(true)} >
             <Ionicons name="calendar" size={20} color={colorPalette.textSecondary} />
             <Text style={{ color: firstBillingDate ? colorPalette.text : colorPalette.textSecondary, fontSize: 16 }}>
-              {firstBillingDate ? firstBillingDate.toLocaleDateString() : t('addScreen.selectDate')}
+              {firstBillingDate ? firstBillingDate.toLocaleDateString(localDevice || 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) : t('addScreen.selectDate')}
             </Text>
             {showDatePicker && Platform.OS === 'android' && (
               <DateTimePicker
