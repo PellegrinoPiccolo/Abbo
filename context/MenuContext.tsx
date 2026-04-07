@@ -94,6 +94,13 @@ const MenuProvider = ({ children }: { children: ReactNode }) => {
                 borderColor: colorPalette.border,
             }]}
         >
+            {/* Header */}
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 24 }}>
+                <TouchableOpacity onPress={closeMenu} style={{ padding: 6, borderRadius: 8, backgroundColor: colorPalette.backgroundSecondary }}>
+                    <Text style={{ fontSize: 18, color: colorPalette.textSecondary, lineHeight: 18 }}>✕</Text>
+                </TouchableOpacity>
+            </View>
+
             {/* Appearance */}
             <Text style={{ color: colorPalette.textSecondary, fontSize: 12, fontWeight: '600', letterSpacing: 1, marginBottom: 10 }}>
                 {t('menu.appearance').toUpperCase()}
