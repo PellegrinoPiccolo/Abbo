@@ -18,6 +18,7 @@
         "firstBillingDateHint": "Inserisci qualsiasi data in cui sei stato addebitato. La prossima data di addebito verrà calcolata automaticamente.",
         "reminder": "Avvisami",
         "notifyMe": "Notificami",
+        "notificationTime": "Orario della notifica",
         "dayBefore": "giorno prima",
         "daysBefore": "giorni prima",
         "weekBefore": "settimana prima",

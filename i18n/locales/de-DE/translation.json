@@ -19,6 +19,7 @@
         "firstBillingDateHint": "Gib ein beliebiges Datum ein, an dem du abgebucht wurdest. Das nächste Abrechnungsdatum wird automatisch berechnet.",
         "reminder": "Erinnere mich",
         "notifyMe": "Benachrichtige mich",
+        "notificationTime": "Benachrichtigungszeit",
         "dayBefore": "Tag vorher",
         "daysBefore": "Tage vorher",
         "weekBefore": "Woche vorher",

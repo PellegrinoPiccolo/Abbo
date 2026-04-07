@@ -19,6 +19,7 @@
         "firstBillingDateHint": "Saisissez n'importe quelle date à laquelle vous avez été prélevé. La prochaine date de facturation sera calculée automatiquement.",
         "reminder": "Me rappeler",
         "notifyMe": "Me notifier",
+        "notificationTime": "Heure de notification",
         "dayBefore": "jour avant",
         "daysBefore": "jours avant",
         "weekBefore": "semaine avant",

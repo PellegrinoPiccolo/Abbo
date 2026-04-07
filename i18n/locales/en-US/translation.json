@@ -19,6 +19,7 @@
         "firstBillingDateHint": "Enter any date you have been billed on. The next billing date will be calculated automatically.",
         "reminder": "Remind Me",
         "notifyMe": "Notify Me",
+        "notificationTime": "Notification time",
         "dayBefore": "day before",
         "daysBefore": "days before",
         "weekBefore": "week before",

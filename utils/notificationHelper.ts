@@ -39,7 +39,7 @@ export async function scheduleNotification(sub: SubscriptionType) {
     // Notifica N giorni prima della prossima data di addebito
     const triggerDate = new Date(nextBillingDate);
     triggerDate.setDate(triggerDate.getDate() - sub.reminderDaysBefore);
-    triggerDate.setHours(9, 0, 0, 0);
+    triggerDate.setHours(sub.reminderHour ?? 9, sub.reminderMinute ?? 0, 0, 0);
 
     let triggerMonthly: Notifications.MonthlyTriggerInput | undefined;
     let triggerYearly: Notifications.YearlyTriggerInput | undefined;
