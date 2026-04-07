@@ -2,8 +2,7 @@
     "tabBar": {
         "home": "Accueil",
         "categories": "Catégories",
-        "wallet": "Portefeuille",
-        "add": "Ajouter un abonnement"
+        "wallet": "Portefeuille"
     },
     "addScreen": {
         "title": "Ajouter un abonnement",
