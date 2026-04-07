@@ -22,7 +22,7 @@ const add = () => {
   const {t} = useTranslation();
   const { currencySymbol } = useCurrency();
   const [selectedLabels, setSelectedLabels] = React.useState<string[]>([]);
-  const {addSub, labels, createLabel, deleteLabel} = useSubs();
+  const {addSub} = useSubs();
 
   const router = useRouter();
 
@@ -38,6 +38,8 @@ const add = () => {
   const [reminderDaysBefore, setReminderDaysBefore] = React.useState<number>(1);
   
   const [showDatePicker, setShowDatePicker] = React.useState<boolean>(false);
+  const [showTimePicker, setShowTimePicker] = React.useState<boolean>(false);
+  const [reminderTime, setReminderTime] = React.useState<Date>(new Date(new Date().setHours(9, 0, 0, 0)));
 
   const [showErrors, setShowErrors] = React.useState<boolean>(false);
 
@@ -53,6 +55,7 @@ const add = () => {
     setFirstBillingDate(new Date());
     setReminder(true);
     setReminderDaysBefore(1);
+    setReminderTime(new Date(new Date().setHours(9, 0, 0, 0)));
     setSelectedLabels([]);
     router.back();
   }
@@ -74,6 +77,8 @@ const add = () => {
       firstBillingDate,
       reminder,
       reminderDaysBefore,
+      reminderHour: reminderTime.getHours(),
+      reminderMinute: reminderTime.getMinutes(),
       labels: selectedLabels,
     }
     addSub(newSub);
@@ -222,10 +227,9 @@ const add = () => {
             {showDatePicker && Platform.OS === 'android' && (
               <DateTimePicker
                 value={firstBillingDate}
-                maximumDate={new Date()}
                 mode="date"
                 display="default"
-                onChange={(event, selectedDate) => {
+                onChange={(_, selectedDate) => {
                   setShowDatePicker(false);
                   if (selectedDate) {
                     setFirstBillingDate(selectedDate);
@@ -258,12 +262,11 @@ const add = () => {
                         display="spinner" // Usa "spinner" o "inline" per iOS dentro la modale
                         textColor={colorPalette.text} // Importante per il tema scuro
                         themeVariant={colorPalette.text === '#000000' ? 'light' : 'dark'} // Forza tema scuro/chiaro
-                        onChange={(event, selectedDate) => {
+                        onChange={(_, selectedDate) => {
                           if (selectedDate) {
                             setFirstBillingDate(selectedDate);
                           }
                         }}
-                        maximumDate={new Date()}
                         style={{ height: 200 }} // Altezza fissa per lo spinner
                       />
                     </View>
@@ -291,7 +294,7 @@ const add = () => {
             />
           </View>
           {reminder && (
-            <View style={{ marginTop: 10 }}>
+            <View style={{ marginTop: 10, gap: 10 }}>
               <Text style={{ color: colorPalette.textSecondary, fontSize: 14, marginBottom: 5 }}>{t('addScreen.notifyMe')}</Text>
               <Picker
                 selectedValue={reminderDaysBefore.toString()}
@@ -308,6 +311,58 @@ const add = () => {
                 <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
                 <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
               </Picker>
+              <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{t('addScreen.notificationTime')}</Text>
+              <Pressable
+                style={[styles.input, { backgroundColor: colorPalette.background, paddingVertical: 14 }]}
+                onPress={() => setShowTimePicker(true)}
+              >
+                <Ionicons name="time-outline" size={20} color={colorPalette.primary} />
+                <Text style={{ color: colorPalette.text, fontSize: 16 }}>
+                  {String(reminderTime.getHours()).padStart(2, '0')}:{String(reminderTime.getMinutes()).padStart(2, '0')}
+                </Text>
+              </Pressable>
+              {showTimePicker && Platform.OS === 'android' && (
+                <DateTimePicker
+                  value={reminderTime}
+                  mode="time"
+                  display="default"
+                  onChange={(_, selectedTime) => {
+                    setShowTimePicker(false);
+                    if (selectedTime) setReminderTime(selectedTime);
+                  }}
+                />
+              )}
+              {Platform.OS === 'ios' && (
+                <Modal
+                  transparent={true}
+                  animationType="slide"
+                  visible={showTimePicker}
+                  onRequestClose={() => setShowTimePicker(false)}
+                >
+                  <TouchableWithoutFeedback onPress={() => setShowTimePicker(false)}>
+                    <View style={styles.modalOverlay}>
+                      <View style={[styles.modalContent, { backgroundColor: colorPalette.backgroundSecondary }]}>
+                        <View style={styles.modalHeader}>
+                          <Pressable onPress={() => setShowTimePicker(false)}>
+                            <Text style={{ color: colorPalette.primary, fontSize: 16, fontWeight: '600' }}>{t('addScreen.done')}</Text>
+                          </Pressable>
+                        </View>
+                        <DateTimePicker
+                          value={reminderTime}
+                          mode="time"
+                          display="spinner"
+                          textColor={colorPalette.text}
+                          themeVariant={colorPalette.text === '#000000' ? 'light' : 'dark'}
+                          onChange={(_, selectedTime) => {
+                            if (selectedTime) setReminderTime(selectedTime);
+                          }}
+                          style={{ height: 200 }}
+                        />
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </Modal>
+              )}
             </View>
           )}
         </View>

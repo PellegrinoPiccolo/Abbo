@@ -9,6 +9,8 @@ export interface SubscriptionType {
     firstBillingDate: Date;
     reminder: boolean;
     reminderDaysBefore: number;
+    reminderHour?: number;
+    reminderMinute?: number;
     notificationId?: string | null;
     labels?: string[];
 }
