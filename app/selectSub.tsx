@@ -133,6 +133,7 @@ const SelectSub = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 12, paddingBottom: 40 }}
           columnWrapperStyle={{ gap: 0 }}
+          style={{ marginBottom: 40 }}
           ListHeaderComponent={
             !search.trim() ? (
               <>
