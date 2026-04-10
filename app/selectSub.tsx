@@ -12,12 +12,12 @@ import {
   View,
 } from 'react-native'
 import { useRouter } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import useTheme from '../hook/ThemeHook'
 import { useTranslation } from 'react-i18next'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PRESET_SUBSCRIPTIONS, ICON_COLORS } from '../constants/PresetSubscriptions'
-import { CUSTOM_ICONS } from '../constants/CustomIcons'
+import { BRAND_ICONS, CUSTOM_ICONS } from '../constants/CustomIcons'
 import SubIcon from '../components/SubIcon'
 
 const SelectSub = () => {
@@ -29,6 +29,7 @@ const SelectSub = () => {
   const [search, setSearch] = useState('')
   const [showCustomModal, setShowCustomModal] = useState(false)
   const [selectedCustomIcon, setSelectedCustomIcon] = useState('star')
+  const [selectedCustomLibrary, setSelectedCustomLibrary] = useState('Ionicons')
   const [selectedColor, setSelectedColor] = useState(ICON_COLORS[4]) // green default
 
   const filteredPresets = useMemo(() => {
@@ -57,7 +58,7 @@ const SelectSub = () => {
       pathname: '/add',
       params: {
         presetIconName: selectedCustomIcon,
-        presetIconLibrary: 'Ionicons',
+        presetIconLibrary: selectedCustomLibrary,
         presetIconColor: selectedColor,
       },
     })
@@ -293,7 +294,11 @@ const SelectSub = () => {
                       elevation: 8,
                     }}
                   >
-                    <Ionicons name={selectedCustomIcon as any} size={38} color="white" />
+                    {selectedCustomLibrary === 'MaterialCommunityIcons' ? (
+                      <MaterialCommunityIcons name={selectedCustomIcon as any} size={38} color="white" />
+                    ) : (
+                      <Ionicons name={selectedCustomIcon as any} size={38} color="white" />
+                    )}
                   </View>
                 </View>
 
@@ -347,37 +352,73 @@ const SelectSub = () => {
                   {t('selectSub.chooseIconLabel')}
                 </Text>
                 <ScrollView
-                  style={{ maxHeight: 240 }}
+                  style={{ maxHeight: 260 }}
                   showsVerticalScrollIndicator={false}
                   nestedScrollEnabled
                 >
+                  {/* Brand icons */}
+                  <Text style={{ color: colorPalette.textSecondary, fontSize: 11, fontWeight: '600', letterSpacing: 0.5, marginBottom: 8 }}>
+                    BRANDS
+                  </Text>
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                    {BRAND_ICONS.map(icon => {
+                      const lib = icon.library || 'Ionicons'
+                      const isSelected = selectedCustomIcon === icon.name && selectedCustomLibrary === lib
+                      return (
+                        <Pressable
+                          key={`${lib}-${icon.name}`}
+                          onPress={() => { setSelectedCustomIcon(icon.name); setSelectedCustomLibrary(lib) }}
+                          style={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: 12,
+                            backgroundColor: isSelected ? selectedColor : colorPalette.backgroundSecondary,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1.5,
+                            borderColor: isSelected ? selectedColor : 'transparent',
+                          }}
+                        >
+                          <MaterialCommunityIcons
+                            name={icon.name as any}
+                            size={24}
+                            color={isSelected ? 'white' : colorPalette.text}
+                          />
+                        </Pressable>
+                      )
+                    })}
+                  </View>
+
+                  {/* Generic icons */}
+                  <Text style={{ color: colorPalette.textSecondary, fontSize: 11, fontWeight: '600', letterSpacing: 0.5, marginBottom: 8 }}>
+                    ICONS
+                  </Text>
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-                    {CUSTOM_ICONS.map(icon => (
-                      <Pressable
-                        key={icon.name}
-                        onPress={() => setSelectedCustomIcon(icon.name)}
-                        style={{
-                          width: 52,
-                          height: 52,
-                          borderRadius: 12,
-                          backgroundColor:
-                            selectedCustomIcon === icon.name
-                              ? selectedColor
-                              : colorPalette.backgroundSecondary,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderWidth: 1.5,
-                          borderColor:
-                            selectedCustomIcon === icon.name ? selectedColor : 'transparent',
-                        }}
-                      >
-                        <Ionicons
-                          name={icon.name as any}
-                          size={24}
-                          color={selectedCustomIcon === icon.name ? 'white' : colorPalette.text}
-                        />
-                      </Pressable>
-                    ))}
+                    {CUSTOM_ICONS.map(icon => {
+                      const isSelected = selectedCustomIcon === icon.name && selectedCustomLibrary === 'Ionicons'
+                      return (
+                        <Pressable
+                          key={icon.name}
+                          onPress={() => { setSelectedCustomIcon(icon.name); setSelectedCustomLibrary('Ionicons') }}
+                          style={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: 12,
+                            backgroundColor: isSelected ? selectedColor : colorPalette.backgroundSecondary,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1.5,
+                            borderColor: isSelected ? selectedColor : 'transparent',
+                          }}
+                        >
+                          <Ionicons
+                            name={icon.name as any}
+                            size={24}
+                            color={isSelected ? 'white' : colorPalette.text}
+                          />
+                        </Pressable>
+                      )
+                    })}
                   </View>
                 </ScrollView>
 
