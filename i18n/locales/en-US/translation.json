@@ -23,6 +23,7 @@
         "daysBefore": "days before",
         "weekBefore": "week before",
         "weeksBefore": "weeks before",
+        "sameDay": "Same day",
         "addButton": "Add Subscription",
         "selectDate": "Select a date",
         "done": "Done",
@@ -32,6 +33,8 @@
         }
     },
     "billingCycle": {
+        "daily": "Daily",
+        "weekly": "Weekly",
         "monthly": "Monthly",
         "yearly": "Yearly"
     },

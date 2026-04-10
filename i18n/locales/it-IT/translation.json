@@ -32,6 +32,8 @@
         }
     },
     "billingCycle": {
+        "daily": "Giornaliero",
+        "weekly": "Settimanale",
         "monthly": "Mensile",
         "yearly": "Annuale"
     },

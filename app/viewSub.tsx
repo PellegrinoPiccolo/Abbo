@@ -39,7 +39,7 @@ const ViewSub = () => {
   const [description, setDescription] = useState(subscription.description);
   const [price, setPrice] = useState(subscription.price);
   const [link, setLink] = useState(subscription.link);
-  const [billingCycle, setBillingCycle] = useState(subscription.billingCycle);
+  const [billingCycle, setBillingCycle] = useState<'weekly' | 'monthly' | 'yearly'>(subscription.billingCycle);
   const [category, setCategory] = useState(subscription.category);
   const [firstBillingDate, setFirstBillingDate] = useState(new Date(subscription.firstBillingDate));
   const [reminder, setReminder] = useState(subscription.reminder);
@@ -60,7 +60,9 @@ const ViewSub = () => {
     let nextBilling = new Date(firstBilling);
 
     while (nextBilling < today) {
-      if (subscription.billingCycle === 'monthly') {
+      if (subscription.billingCycle === 'weekly') {
+        nextBilling.setDate(nextBilling.getDate() + 7);
+      } else if (subscription.billingCycle === 'monthly') {
         nextBilling.setMonth(nextBilling.getMonth() + 1);
       } else {
         nextBilling.setFullYear(nextBilling.getFullYear() + 1);
@@ -184,7 +186,7 @@ const ViewSub = () => {
                     {currencySymbol}{subscription.price}
                   </Text>
                   <Text style={styles.billingCycleText}>
-                    /{subscription.billingCycle === 'monthly' ? t('billingCycle.monthly') : t('billingCycle.yearly')}
+                    /{t(`billingCycle.${subscription.billingCycle}`)}
                   </Text>
                 </LinearGradient>
               </View>
@@ -368,22 +370,17 @@ const ViewSub = () => {
               <View style={styles.inputContainer}>
                 <Text style={[styles.label, { color: colorPalette.text }]}>{t('addScreen.billingCycle')} <Text style={{ color: 'red' }}>*</Text></Text>
                 <View style={[styles.billingCycleContainer, { backgroundColor: colorPalette.backgroundSecondary }]}>
-                  <Pressable
-                    style={[styles.billingCycleTextContainer, { backgroundColor: billingCycle === 'monthly' ? colorPalette.primary : 'transparent' }]}
-                    onPress={() => setBillingCycle('monthly')}
-                  >
-                    <Text style={{ color: billingCycle === 'monthly' ? 'white' : colorPalette.textSecondary, fontSize: 16 }}>
-                      {t('billingCycle.monthly')}
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    style={[styles.billingCycleTextContainer, { backgroundColor: billingCycle === 'yearly' ? colorPalette.primary : 'transparent' }]}
-                    onPress={() => setBillingCycle('yearly')}
-                  >
-                    <Text style={{ color: billingCycle === 'yearly' ? 'white' : colorPalette.textSecondary, fontSize: 16 }}>
-                      {t('billingCycle.yearly')}
-                    </Text>
-                  </Pressable>
+                  {(['weekly', 'monthly', 'yearly'] as const).map((cycle) => (
+                    <Pressable
+                      key={cycle}
+                      style={[styles.billingCycleTextContainer, { backgroundColor: billingCycle === cycle ? colorPalette.primary : 'transparent' }]}
+                      onPress={() => setBillingCycle(cycle)}
+                    >
+                      <Text style={{ color: billingCycle === cycle ? 'white' : colorPalette.textSecondary, fontSize: 15 }}>
+                        {t(`billingCycle.${cycle}`)}
+                      </Text>
+                    </Pressable>
+                  ))}
                 </View>
               </View>
 
@@ -511,10 +508,20 @@ const ViewSub = () => {
                       itemStyle={{ color: colorPalette.text, fontSize: 16 }}
                       mode="dropdown"
                     >
-                      <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
-                      <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
-                      <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
-                      <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
+                      {billingCycle === 'weekly' ? (
+                        <>
+                          <Picker.Item label={t('addScreen.sameDay')} value="0" />
+                          <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
+                          <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
+                        </>
+                      ) : (
+                        <>
+                          <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
+                          <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
+                          <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
+                          <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
+                        </>
+                      )}
                     </Picker>
                     <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{t('addScreen.notificationTime')}</Text>
                     <Pressable
@@ -765,13 +772,13 @@ const styles = StyleSheet.create({
   },
   billingCycleContainer: {
     flexDirection: 'row',
-    padding: 8,
+    alignItems: 'center',
+    padding: 5,
     borderRadius: 10,
-    gap: 8,
   },
   billingCycleTextContainer: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
