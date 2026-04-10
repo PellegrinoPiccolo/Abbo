@@ -44,7 +44,6 @@ const ViewSub = () => {
   const [price, setPrice] = useState(subscription.price);
   const [link, setLink] = useState(subscription.link);
   const [billingCycle, setBillingCycle] = useState<'weekly' | 'monthly' | 'yearly'>(subscription.billingCycle);
-  const [billingCycleInterval, setBillingCycleInterval] = useState<number>(subscription.billingCycleInterval ?? 1);
   const [category, setCategory] = useState(subscription.category);
   const [firstBillingDate, setFirstBillingDate] = useState(new Date(subscription.firstBillingDate));
   const [reminder, setReminder] = useState(subscription.reminder);
@@ -66,15 +65,13 @@ const ViewSub = () => {
     const today = new Date();
     const firstBilling = new Date(subscription.firstBillingDate);
     let nextBilling = new Date(firstBilling);
-    const interval = subscription.billingCycleInterval ?? 1;
-
     while (nextBilling < today) {
       if (subscription.billingCycle === 'weekly') {
-        nextBilling.setDate(nextBilling.getDate() + 7 * interval);
+        nextBilling.setDate(nextBilling.getDate() + 7);
       } else if (subscription.billingCycle === 'monthly') {
-        nextBilling.setMonth(nextBilling.getMonth() + interval);
+        nextBilling.setMonth(nextBilling.getMonth() + 1);
       } else {
-        nextBilling.setFullYear(nextBilling.getFullYear() + interval);
+        nextBilling.setFullYear(nextBilling.getFullYear() + 1);
       }
     }
 
@@ -95,7 +92,6 @@ const ViewSub = () => {
       price,
       link,
       billingCycle,
-      billingCycleInterval,
       category,
       firstBillingDate,
       reminder,
@@ -125,7 +121,6 @@ const ViewSub = () => {
     setPrice(subscription.price);
     setLink(subscription.link);
     setBillingCycle(subscription.billingCycle);
-    setBillingCycleInterval(subscription.billingCycleInterval ?? 1);
     setCategory(subscription.category);
     setFirstBillingDate(new Date(subscription.firstBillingDate));
     setReminder(subscription.reminder);
@@ -234,12 +229,7 @@ const ViewSub = () => {
                     {currencySymbol}{subscription.price}
                   </Text>
                   <Text style={styles.billingCycleText}>
-                    {(() => {
-                      const interval = subscription.billingCycleInterval ?? 1;
-                      const unitKey = subscription.billingCycle === 'weekly' ? 'week' : subscription.billingCycle === 'monthly' ? 'month' : 'year';
-                      const unit = interval === 1 ? t(`billingCycle.${unitKey}Singular`) : t(`billingCycle.${unitKey}Plural`);
-                      return `/ ${t('addScreen.every')} ${interval} ${unit}`;
-                    })()}
+                    {`/ ${t(`billingCycle.${subscription.billingCycle}`)}`}
                   </Text>
                 </LinearGradient>
               </View>
@@ -485,29 +475,6 @@ const ViewSub = () => {
                       </Text>
                     </Pressable>
                   ))}
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 10 }}>
-                  <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{t('addScreen.every')}</Text>
-                  <Pressable
-                    onPress={() => setBillingCycleInterval(prev => Math.max(1, prev - 1))}
-                    style={{ padding: 8, backgroundColor: colorPalette.backgroundSecondary, borderRadius: 8 }}
-                  >
-                    <Ionicons name="remove" size={16} color={colorPalette.text} />
-                  </Pressable>
-                  <Text style={{ color: colorPalette.text, fontSize: 16, minWidth: 28, textAlign: 'center' }}>
-                    {billingCycleInterval}
-                  </Text>
-                  <Pressable
-                    onPress={() => setBillingCycleInterval(prev => prev + 1)}
-                    style={{ padding: 8, backgroundColor: colorPalette.backgroundSecondary, borderRadius: 8 }}
-                  >
-                    <Ionicons name="add" size={16} color={colorPalette.text} />
-                  </Pressable>
-                  <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>
-                    {billingCycleInterval === 1
-                      ? t(`billingCycle.${billingCycle === 'weekly' ? 'weekSingular' : billingCycle === 'monthly' ? 'monthSingular' : 'yearSingular'}`)
-                      : t(`billingCycle.${billingCycle === 'weekly' ? 'weekPlural' : billingCycle === 'monthly' ? 'monthPlural' : 'yearPlural'}`)}
-                  </Text>
                 </View>
               </View>
 

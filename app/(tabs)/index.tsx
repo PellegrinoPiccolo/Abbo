@@ -59,14 +59,13 @@ const Home = () => {
     firstBillingDate.setHours(0, 0, 0, 0);
     let nextBillingDate = new Date(firstBillingDate);
     nextBillingDate.setHours(0, 0, 0, 0);
-    const interval = sub.billingCycleInterval ?? 1;
     while (nextBillingDate <= today) {
       if (sub.billingCycle === 'weekly') {
-        nextBillingDate.setDate(nextBillingDate.getDate() + 7 * interval);
+        nextBillingDate.setDate(nextBillingDate.getDate() + 7);
       } else if (sub.billingCycle === 'monthly') {
-        nextBillingDate.setMonth(nextBillingDate.getMonth() + interval);
+        nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
       } else {
-        nextBillingDate.setFullYear(nextBillingDate.getFullYear() + interval);
+        nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
       }
     }
     const differenceOfDays = Math.ceil((nextBillingDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
