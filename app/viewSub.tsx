@@ -594,29 +594,36 @@ const ViewSub = () => {
                     <Text style={{ color: colorPalette.textSecondary, fontSize: 14, marginBottom: 5 }}>
                       {t('addScreen.notifyMe')}
                     </Text>
-                    <Picker
-                      selectedValue={reminderDaysBefore.toString()}
-                      onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
-                      style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
-                      dropdownIconColor={colorPalette.text}
-                      itemStyle={{ color: colorPalette.text, fontSize: 16 }}
-                      mode="dropdown"
-                    >
+                    <>
                       {billingCycle === 'weekly' ? (
-                        <>
+                        <Picker
+                          selectedValue={reminderDaysBefore.toString()}
+                          onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
+                          style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
+                          dropdownIconColor={colorPalette.text}
+                          itemStyle={{ color: colorPalette.text, fontSize: 16 }}
+                          mode="dropdown"
+                        >
                           <Picker.Item label={t('addScreen.sameDay')} value="0" />
                           <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
                           <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
-                        </>
+                        </Picker>
                       ) : (
-                        <>
+                        <Picker
+                          selectedValue={reminderDaysBefore.toString()}
+                          onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
+                          style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
+                          dropdownIconColor={colorPalette.text}
+                          itemStyle={{ color: colorPalette.text, fontSize: 16 }}
+                          mode="dropdown"
+                        >
                           <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
                           <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
                           <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
                           <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
-                        </>
+                        </Picker>
                       )}
-                    </Picker>
+                    </>
                     <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{t('addScreen.notificationTime')}</Text>
                     <Pressable
                       style={[styles.input, { backgroundColor: colorPalette.background, paddingVertical: 14 }]}
