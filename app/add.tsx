@@ -448,6 +448,7 @@ const add = () => {
             shadowRadius: 4.65,
             elevation: 6,
             opacity: name.trim() === '' || price.trim() === '' ? 0.35 : 1,
+            marginBottom: 40,
           }}
           onPress={save}
         >
