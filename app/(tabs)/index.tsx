@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native'
+import { Linking, Pressable, ScrollView, Text, View } from 'react-native'
 import useTheme from '../../hook/ThemeHook';
 import useSubs from '../../hook/SubsHook';
 import { FlashList } from "@shopify/flash-list";
@@ -12,7 +12,7 @@ import useCurrency from '../../hook/CurrencyHook';
 import { SubscriptionType } from '../../types/SubscriptionType';
 import CurrencyExchange from '../../assets/icons/currency_exchange.svg';
 import CalendarToday from '../../assets/icons/calendar_today.svg';
-import { ImageForCategory } from '../../constants/ImageForCategory';
+import SubIcon from '../../components/SubIcon';
 import { useRouter } from 'expo-router';
 import TabBarButton from '../../components/TabBarButton';
 
@@ -54,16 +54,17 @@ const Home = () => {
 
   const calcDifferenceByToday = (sub: SubscriptionType) => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Normalize to midnight
+    today.setHours(0, 0, 0, 0);
     const firstBillingDate = new Date(sub.firstBillingDate);
-    firstBillingDate.setHours(0, 0, 0, 0); // Normalize to midnight
+    firstBillingDate.setHours(0, 0, 0, 0);
     let nextBillingDate = new Date(firstBillingDate);
-    nextBillingDate.setHours(0, 0, 0, 0); // Normalize to midnight
-    // Adjust next billing date to be in the future
+    nextBillingDate.setHours(0, 0, 0, 0);
     while (nextBillingDate <= today) {
-      if (sub.billingCycle === 'monthly') {
+      if (sub.billingCycle === 'weekly') {
+        nextBillingDate.setDate(nextBillingDate.getDate() + 7);
+      } else if (sub.billingCycle === 'monthly') {
         nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
-      } else if (sub.billingCycle === 'yearly') {
+      } else {
         nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
       }
     }
@@ -374,13 +375,17 @@ const Home = () => {
     return (
       <Pressable onPress={() => navigateToSub(sub)} style={{ padding: 16, marginBottom: 10, borderColor: colorPalette.border, borderWidth: 1, backgroundColor: colorPalette.backgroundSecondary, marginHorizontal: 16, borderRadius: 10 }}>
         <View style={{flexDirection: 'row', alignItems: 'flex-start', marginBottom: 10}}>
-          <View style={{
-            backgroundColor: colorPalette.primary + '20', 
-            padding: 10, 
-            borderRadius: 10,
-            marginRight: 10,
-          }}>
-            <Image source={ImageForCategory[sub.category]} style={{ width: 34, height: 34}} />
+          <View style={{ marginRight: 10 }}>
+            <SubIcon
+              iconName={sub.iconName}
+              iconLibrary={sub.iconLibrary}
+              iconColor={sub.iconColor}
+              category={sub.category}
+              containerSize={54}
+              iconSize={28}
+              borderRadius={12}
+              fallbackBg={colorPalette.primary + '20'}
+            />
           </View>
           <View style={{flexDirection: 'column', flex: 1}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, alignItems: 'flex-start'}}>
@@ -390,7 +395,7 @@ const Home = () => {
                   {`${currencySymbol}${sub.price}`}
                 </Text>
                 <Text style={{ color: colorPalette.textSecondary, fontSize: 12, marginTop: 4 }}>
-                  /{sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : t('home.yearly', 'Yearly')}
+                  /{sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : sub.billingCycle === 'yearly' ? t('home.yearly', 'Yearly') : t('home.weekly', 'Weekly')}
                 </Text>
               </View>
             </View>
@@ -534,7 +539,7 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         />
       <View style={{ position: 'absolute', bottom: -10, right: 20 }}>
-        <TabBarButton onPress={() => router.push('/add')} />
+        <TabBarButton onPress={() => router.push('/selectSub')} />
       </View>
     </View>
   )

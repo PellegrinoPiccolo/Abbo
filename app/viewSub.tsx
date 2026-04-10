@@ -17,6 +17,9 @@ import { useSharedValue } from 'react-native-reanimated';
 import { Picker } from '@react-native-picker/picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
+import { ICON_COLORS } from '../constants/PresetSubscriptions';
+import SubIcon from '../components/SubIcon';
+import IconPickerModal from '../components/IconPickerModal';
 
 const ViewSub = () => {
   const { colorPalette } = useTheme();
@@ -31,6 +34,7 @@ const ViewSub = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showIconPicker, setShowIconPicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -39,7 +43,7 @@ const ViewSub = () => {
   const [description, setDescription] = useState(subscription.description);
   const [price, setPrice] = useState(subscription.price);
   const [link, setLink] = useState(subscription.link);
-  const [billingCycle, setBillingCycle] = useState(subscription.billingCycle);
+  const [billingCycle, setBillingCycle] = useState<'weekly' | 'monthly' | 'yearly'>(subscription.billingCycle);
   const [category, setCategory] = useState(subscription.category);
   const [firstBillingDate, setFirstBillingDate] = useState(new Date(subscription.firstBillingDate));
   const [reminder, setReminder] = useState(subscription.reminder);
@@ -51,6 +55,9 @@ const ViewSub = () => {
     return d;
   });
   const [selectedLabels, setSelectedLabels] = useState<string[]>(subscription.labels || []);
+  const [iconName, setIconName] = useState<string | null>(subscription.iconName || null);
+  const [iconLibrary, setIconLibrary] = useState<string | null>(subscription.iconLibrary || null);
+  const [iconColor, setIconColor] = useState<string>(subscription.iconColor || ICON_COLORS[7]);
 
   const localDevice = getLocales()[0].languageCode;
 
@@ -58,9 +65,10 @@ const ViewSub = () => {
     const today = new Date();
     const firstBilling = new Date(subscription.firstBillingDate);
     let nextBilling = new Date(firstBilling);
-
     while (nextBilling < today) {
-      if (subscription.billingCycle === 'monthly') {
+      if (subscription.billingCycle === 'weekly') {
+        nextBilling.setDate(nextBilling.getDate() + 7);
+      } else if (subscription.billingCycle === 'monthly') {
         nextBilling.setMonth(nextBilling.getMonth() + 1);
       } else {
         nextBilling.setFullYear(nextBilling.getFullYear() + 1);
@@ -91,6 +99,9 @@ const ViewSub = () => {
       reminderHour: reminderTime.getHours(),
       reminderMinute: reminderTime.getMinutes(),
       labels: selectedLabels,
+      iconName,
+      iconLibrary: iconLibrary as 'Ionicons' | 'MaterialCommunityIcons' | null,
+      iconColor,
     };
 
     modifySub(updatedSub);
@@ -119,6 +130,9 @@ const ViewSub = () => {
     resetTime.setHours(subscription.reminderHour ?? 9, subscription.reminderMinute ?? 0, 0, 0);
     setReminderTime(resetTime);
     setSelectedLabels(subscription.labels || []);
+    setIconName(subscription.iconName || null);
+    setIconLibrary(subscription.iconLibrary || null);
+    setIconColor(subscription.iconColor || ICON_COLORS[7]);
     setShowErrors(false);
     setIsEditing(false);
   };
@@ -151,16 +165,47 @@ const ViewSub = () => {
             <View style={styles.viewContainer}>
               {/* Subscription Icon & Name */}
               <View style={styles.iconContainer}>
-                <LinearGradient
-                  colors={[colorPalette.primary, colorPalette.secondary]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.iconGradient}
-                >
-                  <View style={[styles.iconWrapper, { backgroundColor: colorPalette.background }]}>
-                    <Image source={ImageForCategory[subscription.category]} style={styles.icon} />
-                  </View>
-                </LinearGradient>
+                <Pressable onPress={() => setShowIconPicker(true)}>
+                  {iconName ? (
+                    <View style={{ position: 'relative' }}>
+                      <SubIcon
+                        iconName={iconName}
+                        iconLibrary={iconLibrary}
+                        iconColor={iconColor}
+                        containerSize={100}
+                        iconSize={52}
+                        borderRadius={26}
+                        shadow
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        bottom: -4,
+                        right: -4,
+                        width: 26,
+                        height: 26,
+                        borderRadius: 13,
+                        backgroundColor: colorPalette.primary,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderWidth: 2,
+                        borderColor: colorPalette.background,
+                      }}>
+                        <Ionicons name="pencil" size={13} color="white" />
+                      </View>
+                    </View>
+                  ) : (
+                    <LinearGradient
+                      colors={[colorPalette.primary, colorPalette.secondary]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={styles.iconGradient}
+                    >
+                      <View style={[styles.iconWrapper, { backgroundColor: colorPalette.background }]}>
+                        <Image source={ImageForCategory[subscription.category]} style={styles.icon} />
+                      </View>
+                    </LinearGradient>
+                  )}
+                </Pressable>
               </View>
 
               <Text style={[styles.subscriptionName, { color: colorPalette.text }]}>{subscription.name}</Text>
@@ -184,7 +229,7 @@ const ViewSub = () => {
                     {currencySymbol}{subscription.price}
                   </Text>
                   <Text style={styles.billingCycleText}>
-                    /{subscription.billingCycle === 'monthly' ? t('billingCycle.monthly') : t('billingCycle.yearly')}
+                    {`/ ${t(`billingCycle.${subscription.billingCycle}`)}`}
                   </Text>
                 </LinearGradient>
               </View>
@@ -296,6 +341,57 @@ const ViewSub = () => {
           ) : (
             /* Edit Mode */
             <View style={styles.editContainer}>
+              {/* Icon picker trigger (edit mode) */}
+              <View style={[styles.inputContainer, { alignItems: 'center' }]}>
+                <Pressable onPress={() => setShowIconPicker(true)}>
+                  {iconName ? (
+                    <View style={{ position: 'relative' }}>
+                      <SubIcon
+                        iconName={iconName}
+                        iconLibrary={iconLibrary}
+                        iconColor={iconColor}
+                        containerSize={80}
+                        iconSize={42}
+                        borderRadius={22}
+                        shadow
+                      />
+                      <View style={{
+                        position: 'absolute',
+                        bottom: -4,
+                        right: -4,
+                        width: 24,
+                        height: 24,
+                        borderRadius: 12,
+                        backgroundColor: colorPalette.primary,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderWidth: 2,
+                        borderColor: colorPalette.background,
+                      }}>
+                        <Ionicons name="pencil" size={12} color="white" />
+                      </View>
+                    </View>
+                  ) : (
+                    <View style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: 22,
+                      backgroundColor: colorPalette.backgroundSecondary,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderWidth: 1.5,
+                      borderColor: colorPalette.border,
+                      borderStyle: 'dashed',
+                    }}>
+                      <Ionicons name="add" size={32} color={colorPalette.textSecondary} />
+                    </View>
+                  )}
+                </Pressable>
+                <Text style={{ color: colorPalette.textSecondary, fontSize: 12, marginTop: 8 }}>
+                  {t('selectSub.chooseIcon', 'Choose Icon')}
+                </Text>
+              </View>
+
               {/* Name */}
               <View style={styles.inputContainer}>
                 <Text style={[styles.label, { color: colorPalette.text }]}>{t('addScreen.name')} <Text style={{ color: 'red' }}>*</Text></Text>
@@ -368,22 +464,17 @@ const ViewSub = () => {
               <View style={styles.inputContainer}>
                 <Text style={[styles.label, { color: colorPalette.text }]}>{t('addScreen.billingCycle')} <Text style={{ color: 'red' }}>*</Text></Text>
                 <View style={[styles.billingCycleContainer, { backgroundColor: colorPalette.backgroundSecondary }]}>
-                  <Pressable
-                    style={[styles.billingCycleTextContainer, { backgroundColor: billingCycle === 'monthly' ? colorPalette.primary : 'transparent' }]}
-                    onPress={() => setBillingCycle('monthly')}
-                  >
-                    <Text style={{ color: billingCycle === 'monthly' ? 'white' : colorPalette.textSecondary, fontSize: 16 }}>
-                      {t('billingCycle.monthly')}
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    style={[styles.billingCycleTextContainer, { backgroundColor: billingCycle === 'yearly' ? colorPalette.primary : 'transparent' }]}
-                    onPress={() => setBillingCycle('yearly')}
-                  >
-                    <Text style={{ color: billingCycle === 'yearly' ? 'white' : colorPalette.textSecondary, fontSize: 16 }}>
-                      {t('billingCycle.yearly')}
-                    </Text>
-                  </Pressable>
+                  {(['weekly', 'monthly', 'yearly'] as const).map((cycle) => (
+                    <Pressable
+                      key={cycle}
+                      style={[styles.billingCycleTextContainer, { backgroundColor: billingCycle === cycle ? colorPalette.primary : 'transparent' }]}
+                      onPress={() => setBillingCycle(cycle)}
+                    >
+                      <Text style={{ color: billingCycle === cycle ? 'white' : colorPalette.textSecondary, fontSize: 15 }}>
+                        {t(`billingCycle.${cycle}`)}
+                      </Text>
+                    </Pressable>
+                  ))}
                 </View>
               </View>
 
@@ -511,10 +602,20 @@ const ViewSub = () => {
                       itemStyle={{ color: colorPalette.text, fontSize: 16 }}
                       mode="dropdown"
                     >
-                      <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
-                      <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
-                      <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
-                      <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
+                      {billingCycle === 'weekly' ? (
+                        <>
+                          <Picker.Item label={t('addScreen.sameDay')} value="0" />
+                          <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
+                          <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
+                        </>
+                      ) : (
+                        <>
+                          <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
+                          <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
+                          <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
+                          <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
+                        </>
+                      )}
                     </Picker>
                     <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{t('addScreen.notificationTime')}</Text>
                     <Pressable
@@ -600,6 +701,30 @@ const ViewSub = () => {
           )}
         </ScrollView>
       </SafeAreaView>
+
+      {/* Icon Picker Modal */}
+      <IconPickerModal
+        visible={showIconPicker}
+        onClose={() => setShowIconPicker(false)}
+        iconName={iconName}
+        iconLibrary={iconLibrary}
+        iconColor={iconColor}
+        onSelect={(name, library, color) => {
+          setIconName(name);
+          setIconLibrary(library);
+          setIconColor(color);
+          if (!isEditing) {
+            modifySub({ ...subscription, iconName: name, iconLibrary: library as 'Ionicons' | 'MaterialCommunityIcons', iconColor: color });
+          }
+        }}
+        onRemove={() => {
+          setIconName(null);
+          setIconLibrary(null);
+          if (!isEditing) {
+            modifySub({ ...subscription, iconName: null, iconLibrary: null });
+          }
+        }}
+      />
 
       {/* Delete Confirmation Modal */}
       <Modal transparent={true} animationType="fade" visible={showDeleteModal} onRequestClose={() => setShowDeleteModal(false)}>
@@ -765,13 +890,13 @@ const styles = StyleSheet.create({
   },
   billingCycleContainer: {
     flexDirection: 'row',
-    padding: 8,
+    alignItems: 'center',
+    padding: 5,
     borderRadius: 10,
-    gap: 8,
   },
   billingCycleTextContainer: {
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

@@ -4,7 +4,7 @@ export interface SubscriptionType {
     description?: string | null;
     price: string;
     link: string | null;
-    billingCycle: 'monthly' | 'yearly';
+    billingCycle: 'weekly' | 'monthly' | 'yearly';
     category: 'Entertainment' | 'Productivity' | 'Education' | 'Fittnes&Health' | 'Work' | 'Home' | 'Other';
     firstBillingDate: Date;
     reminder: boolean;
@@ -13,4 +13,7 @@ export interface SubscriptionType {
     reminderMinute?: number;
     notificationId?: string | null;
     labels?: string[];
+    iconName?: string | null;
+    iconColor?: string | null;
+    iconLibrary?: 'Ionicons' | 'MaterialCommunityIcons' | null;
 }
