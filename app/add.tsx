@@ -40,7 +40,7 @@ const add = () => {
   const [description, setDescription] = React.useState<string | null>(null);
   const [price, setPrice] = React.useState<string>('');
   const [link, setLink] = React.useState<string | null>(null);
-  const [billingCycle, setBillingCycle] = React.useState<'weekly' | 'monthly' | 'yearly'>('monthly');
+  const [billingCycle, setBillingCycle] = React.useState<'monthly' | 'yearly'>('monthly');
   const [category, setCategory] = React.useState<string>(presetCategory || 'Entertainment');
   const [firstBillingDate, setFirstBillingDate] = React.useState<Date>(new Date());
   const [reminder, setReminder] = React.useState<boolean>(true);
@@ -71,7 +71,7 @@ const add = () => {
       description,
       price,
       link,
-      billingCycle: billingCycle as 'weekly' | 'monthly' | 'yearly',
+      billingCycle: billingCycle as 'monthly' | 'yearly',
       category: category as 'Entertainment' | 'Productivity' | 'Education' | 'Fittnes&Health' | 'Work' | 'Home' | 'Other',
       firstBillingDate,
       reminder,
@@ -236,7 +236,7 @@ const add = () => {
         <View style={styles.inputContainer}>
           <Text style={[styles.label, { color: colorPalette.text }]}>{t('addScreen.billingCycle')} <Text style={{ color: 'red' }}>*</Text></Text>
           <View style={[styles.billingCycleContainer, { backgroundColor: colorPalette.backgroundSecondary }]} >
-            {(['weekly', 'monthly', 'yearly'] as const).map((cycle) => (
+            {(['monthly', 'yearly'] as const).map((cycle) => (
               <Pressable key={cycle} style={[styles.billingCycleTextContainer, {backgroundColor: billingCycle === cycle ? colorPalette.primary : 'transparent'}]} onPress={() => setBillingCycle(cycle)}>
                 <Text style={{ color: billingCycle === cycle ? 'white' : colorPalette.textSecondary, fontSize: 15 }}>{t(`billingCycle.${cycle}`)}</Text>
               </Pressable>
@@ -348,40 +348,21 @@ const add = () => {
           {reminder && (
             <View style={{ marginTop: 10, gap: 10 }}>
               <Text style={{ color: colorPalette.textSecondary, fontSize: 14, marginBottom: 5 }}>{t('addScreen.notifyMe')}</Text>
-              <>
-                {billingCycle === 'weekly' ? (
-                  <Picker
-                    selectedValue={reminderDaysBefore.toString()}
-                    onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
-                    style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
-                    dropdownIconColor={colorPalette.text}
-                    itemStyle={{ color: colorPalette.text, fontSize: 16 }}
-                    mode='dropdown'
-                    dropdownIconRippleColor={colorPalette.backgroundSecondary}
-                    selectionColor={colorPalette.primary}
-                  >
-                    <Picker.Item label={t('addScreen.sameDay')} value="0" />
-                    <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
-                    <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
-                  </Picker>
-                ) : (
-                  <Picker
-                    selectedValue={reminderDaysBefore.toString()}
-                    onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
-                    style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
-                    dropdownIconColor={colorPalette.text}
-                    itemStyle={{ color: colorPalette.text, fontSize: 16 }}
-                    mode='dropdown'
-                    dropdownIconRippleColor={colorPalette.backgroundSecondary}
-                    selectionColor={colorPalette.primary}
-                  >
-                    <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
-                    <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
-                    <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
-                    <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
-                  </Picker>
-                )}
-              </>
+              <Picker
+                  selectedValue={reminderDaysBefore.toString()}
+                  onValueChange={(itemValue) => setReminderDaysBefore(Number(itemValue))}
+                  style={{ color: colorPalette.text, backgroundColor: 'transparent', borderRadius: 8 }}
+                  dropdownIconColor={colorPalette.text}
+                  itemStyle={{ color: colorPalette.text, fontSize: 16 }}
+                  mode='dropdown'
+                  dropdownIconRippleColor={colorPalette.backgroundSecondary}
+                  selectionColor={colorPalette.primary}
+                >
+                  <Picker.Item label={1 + ' ' + t('addScreen.dayBefore')} value="1" />
+                  <Picker.Item label={3 + ' ' + t('addScreen.daysBefore')} value="3" />
+                  <Picker.Item label={1 + ' ' + t('addScreen.weekBefore')} value="7" />
+                  <Picker.Item label={2 + ' ' + t('addScreen.weeksBefore')} value="14" />
+                </Picker>
               <Text style={{ color: colorPalette.textSecondary, fontSize: 14 }}>{t('addScreen.notificationTime')}</Text>
               <Pressable
                 style={[styles.input, { backgroundColor: colorPalette.background, paddingVertical: 14 }]}

@@ -4,7 +4,7 @@ export interface SubscriptionType {
     description?: string | null;
     price: string;
     link: string | null;
-    billingCycle: 'weekly' | 'monthly' | 'yearly';
+    billingCycle: 'monthly' | 'yearly';
     category: 'Entertainment' | 'Productivity' | 'Education' | 'Fittnes&Health' | 'Work' | 'Home' | 'Other';
     firstBillingDate: Date;
     reminder: boolean;

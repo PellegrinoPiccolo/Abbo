@@ -60,9 +60,7 @@ const Home = () => {
     let nextBillingDate = new Date(firstBillingDate);
     nextBillingDate.setHours(0, 0, 0, 0);
     while (nextBillingDate <= today) {
-      if (sub.billingCycle === 'weekly') {
-        nextBillingDate.setDate(nextBillingDate.getDate() + 7);
-      } else if (sub.billingCycle === 'monthly') {
+      if (sub.billingCycle === 'monthly') {
         nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
       } else {
         nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
@@ -395,7 +393,7 @@ const Home = () => {
                   {`${currencySymbol}${sub.price}`}
                 </Text>
                 <Text style={{ color: colorPalette.textSecondary, fontSize: 12, marginTop: 4 }}>
-                  /{sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : sub.billingCycle === 'yearly' ? t('home.yearly', 'Yearly') : t('home.weekly', 'Weekly')}
+                  /{sub.billingCycle === 'monthly' ? t('home.monthly', 'Monthly') : t('home.yearly', 'Yearly')}
                 </Text>
               </View>
             </View>
