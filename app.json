@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "SubTrack",
+    "name": "Abbo",
     "slug": "sub_track",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "scheme": "subtrack",
+    "scheme": "abbo",
     "platforms": ["ios", "android"],
     "assetBundlePatterns": [
       "assets/**/*"
@@ -15,11 +15,11 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFF8E7"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.pellegrinopiccolo.subtrack",
+      "bundleIdentifier": "com.pellegrinopiccolo.abbo",
       "icons": {
         "light": "./assets/ios-light.png",
         "dark": "./assets/ios-dark.png",
@@ -29,11 +29,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#F5C228"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.pellegrinopiccolo.subtrack"
+      "package": "com.pellegrinopiccolo.abbo"
     },
     "plugins": [
       "expo-router",
@@ -42,11 +42,11 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#f3f9ffff",
+          "backgroundColor": "#FFF8E7",
           "image": "./assets/icon.png",
           "dark": {
             "image": "./assets/icon.png",
-            "backgroundColor": "#020612"
+            "backgroundColor": "#130E00"
           },
           "imageWidth": 200
         }
