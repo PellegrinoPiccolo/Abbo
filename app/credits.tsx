@@ -186,14 +186,14 @@ const Credits = () => {
             fontWeight: 'bold',
             marginBottom: 8
           }}>
-            SubTrack
+            Abbo
           </Text>
-          <Text style={{ 
-            color: colorPalette.textSecondary, 
+          <Text style={{
+            color: colorPalette.textSecondary,
             fontSize: 12,
             textAlign: 'center'
           }}>
-            © {new Date().getFullYear()} SubTrack.{'\n'}All rights reserved.
+            © {new Date().getFullYear()} Abbo.{'\n'}All rights reserved.
           </Text>
         </View>
       </ScrollView>

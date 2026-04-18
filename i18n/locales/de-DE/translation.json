@@ -155,8 +155,8 @@
     },
     "credits": {
         "title": "Nachweise und Danksagungen",
-        "thanksTitle": "Danke, dass du SubTrack nutzt!",
-        "thanksMessage": "SubTrack wurde entwickelt, um dir die Verwaltung deiner Abos zu erleichtern.",
+        "thanksTitle": "Danke, dass du Abbo nutzt!",
+        "thanksMessage": "Abbo wurde entwickelt, um dir die Verwaltung deiner Abos zu erleichtern.",
         "developer": "Entwickler",
         "iconCredits": "Icon-Nachweise"
     },

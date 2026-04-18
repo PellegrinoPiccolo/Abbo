@@ -102,7 +102,7 @@ const _layout = () => {
                     fontWeight: 'normal',
                     color: 'black'
                   }}>
-                    SubTrack
+                    Abbo
                   </Text>
                 }
               >
@@ -116,7 +116,7 @@ const _layout = () => {
                     fontWeight: 'normal',
                     opacity: 0
                   }}>
-                    SubTrack
+                    Abbo
                   </Text>
                 </LinearGradient>
               </MaskedView>

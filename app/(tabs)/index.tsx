@@ -516,7 +516,7 @@ const Home = () => {
           marginTop: 16,
           textAlign: 'center'
         }}>
-          © {new Date().getFullYear()} SubTrack
+          © {new Date().getFullYear()} Abbo
         </Text>
       </View>
     );
