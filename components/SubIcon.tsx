@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, View } from 'react-native'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { ImageForCategory } from '../constants/ImageForCategory'
+import BRAND_SVG_ICONS from '../constants/BrandSvgIcons'
 
 // ---------------------------------------------------------------------------
 // Error boundary — catches invalid icon names that cause a render error and
@@ -78,28 +79,39 @@ const SubIcon = ({
   const actualRadius = borderRadius ?? Math.round(containerSize * 0.25);
 
   if (iconName && iconColor) {
+    const containerStyle = {
+      width: containerSize,
+      height: containerSize,
+      borderRadius: actualRadius,
+      backgroundColor: iconColor,
+      justifyContent: 'center' as const,
+      alignItems: 'center' as const,
+      ...(shadow && {
+        shadowColor: iconColor,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.45,
+        shadowRadius: 10,
+        elevation: 8,
+      }),
+    }
+
+    if (iconLibrary === 'svg') {
+      const SvgIcon = BRAND_SVG_ICONS[iconName]
+      if (SvgIcon) {
+        return (
+          <View style={containerStyle}>
+            <SvgIcon width={actualIconSize} height={actualIconSize} />
+          </View>
+        )
+      }
+    }
+
     const fallbackIcon = (
       <Ionicons name="help-circle-outline" size={actualIconSize} color="white" />
     );
 
     return (
-      <View
-        style={{
-          width: containerSize,
-          height: containerSize,
-          borderRadius: actualRadius,
-          backgroundColor: iconColor,
-          justifyContent: 'center',
-          alignItems: 'center',
-          ...(shadow && {
-            shadowColor: iconColor,
-            shadowOffset: { width: 0, height: 6 },
-            shadowOpacity: 0.45,
-            shadowRadius: 10,
-            elevation: 8,
-          }),
-        }}
-      >
+      <View style={containerStyle}>
         <IconErrorBoundary fallback={fallbackIcon}>
           <RawIcon
             iconName={iconName}
