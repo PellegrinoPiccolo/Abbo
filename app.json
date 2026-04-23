@@ -31,6 +31,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#F5C228"
       },
+      "gradleProperties": {
+        "org.gradle.jvmargs": "-Xmx4g -XX:MaxMetaspaceSize=512m"
+      },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.pellegrinopiccolo.subtrack"
